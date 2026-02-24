@@ -13,7 +13,7 @@ public class Agendamento extends EntidadeBase {
     private Paciente paciente;
 
     @ManyToOne(optional = false)
-    private Usuario profissional; // Quem vai atender
+    private Usuario profissional;
 
     @Column(nullable = false)
     private LocalDateTime dataHoraInicio;
@@ -22,12 +22,11 @@ public class Agendamento extends EntidadeBase {
     private LocalDateTime dataHoraFim;
 
     @Enumerated(EnumType.STRING)
-    private StatusAgendamento status; // AGENDADO, CONFIRMADO, CANCELADO, FINALIZADO
+    private StatusAgendamento status;
 
-    private String motivoConsulta; // Breve descrição
+    private String motivoConsulta;
     private BigDecimal valorPrevisto;
 
-    // Campo para linkar com a "Evolução" depois que o atendimento termina
     @OneToOne(mappedBy = "agendamento")
     private EvolucaoClinica evolucao;
 }
