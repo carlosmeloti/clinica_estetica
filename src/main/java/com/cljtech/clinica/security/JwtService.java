@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +15,8 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-
-    // Use uma chave de pelo menos 256-bit (32 caracteres)
-    private static final String SECRET_KEY = "sua_chave_secreta_muito_longa_e_segura_aqui";
+    @Value("${api.security.token.secret}")
+    private String secretKey;
 
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
@@ -28,7 +28,7 @@ public class JwtService {
     }
 
     private SecretKey getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
