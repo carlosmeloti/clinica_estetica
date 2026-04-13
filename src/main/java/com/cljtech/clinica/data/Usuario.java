@@ -3,16 +3,18 @@ package com.cljtech.clinica.data;
 
 import com.cljtech.clinica.model.enuns.PerfilUsuario;
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "usuarios")
+@Data
 public class Usuario extends EntidadeBase {
 
     @Column(nullable = false, unique = true)
     private String login;
 
     @Column(nullable = false)
-    private String senha; // Lembre-se: salvar sempre com BCrypt!
+    private String senha;
 
     @Column(nullable = false)
     private String nome;
@@ -22,6 +24,5 @@ public class Usuario extends EntidadeBase {
     @Enumerated(EnumType.STRING)
     private PerfilUsuario perfil; // ADMIN, MEDICO, RECEPCAO
 
-    // Se o usuário for um profissional de saúde, vinculamos o registro dele
-    private String registroProfissional; // CRM, CRO, etc.
+    private String registroProfissional;
 }

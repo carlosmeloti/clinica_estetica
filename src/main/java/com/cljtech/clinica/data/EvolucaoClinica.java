@@ -1,13 +1,14 @@
 package com.cljtech.clinica.data;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "evolucoes_clinicas")
 @Inheritance(strategy = InheritanceType.JOINED)
+@Data
 public class EvolucaoClinica extends EntidadeBase {
 
     @OneToOne
@@ -25,16 +26,10 @@ public class EvolucaoClinica extends EntidadeBase {
     @Column(nullable = false)
     private LocalDateTime dataRegistro;
 
-    @Lob // Para textos longos (anamnese, evolução do dia)
+    @Lob
     @Column(columnDefinition = "TEXT")
     private String relatoClinico;
 
     private String diagnosticoHipotetico;
 
-    // Campos para controle de anexos (fotos de antes/depois, exames)
-    // Guardamos apenas o caminho/link do arquivo
-    @ElementCollection
-    private List<String> linksAnexos;
-
-    // Getters e Setters
 }

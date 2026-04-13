@@ -1,8 +1,10 @@
 package com.cljtech.clinica.data;
 
 import jakarta.persistence.Embeddable;
+import lombok.Data;
 
 @Embeddable
+@Data
 public class Endereco {
     private String logradouro;
     private String numero;
@@ -11,6 +13,4 @@ public class Endereco {
     private String cidade;
     private String estado;
     private String cep;
-
-    // Getters e Setters
 }

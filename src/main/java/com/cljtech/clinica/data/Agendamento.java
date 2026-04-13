@@ -2,11 +2,13 @@ package com.cljtech.clinica.data;
 
 import com.cljtech.clinica.model.enuns.StatusAgendamento;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
+@Data
 public class Agendamento extends EntidadeBase {
 
     @ManyToOne(optional = false)
@@ -14,6 +16,9 @@ public class Agendamento extends EntidadeBase {
 
     @ManyToOne(optional = false)
     private Usuario profissional;
+
+    @ManyToOne(optional = false)
+    private Procedimento procedimento;
 
     @Column(nullable = false)
     private LocalDateTime dataHoraInicio;
@@ -25,8 +30,7 @@ public class Agendamento extends EntidadeBase {
     private StatusAgendamento status;
 
     private String motivoConsulta;
+
     private BigDecimal valorPrevisto;
 
-    @OneToOne(mappedBy = "agendamento")
-    private EvolucaoClinica evolucao;
 }

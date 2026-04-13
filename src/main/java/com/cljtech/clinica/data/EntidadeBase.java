@@ -1,10 +1,12 @@
 package com.cljtech.clinica.data;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @MappedSuperclass
+@Data
 public abstract class EntidadeBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
