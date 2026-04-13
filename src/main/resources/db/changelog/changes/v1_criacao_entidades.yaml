@@ -1,0 +1,464 @@
+databaseChangeLog:
+- changeSet:
+    id: 1776077714730-1
+    author: carlos (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: agendamentoPK
+            name: id
+            type: BIGINT
+        - column:
+            name: ativo
+            type: BOOLEAN
+        - column:
+            name: data_atualizacao
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: data_criacao
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: data_hora_fim
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: data_hora_inicio
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: motivo_consulta
+            type: VARCHAR(255)
+        - column:
+            name: status
+            type: VARCHAR(255)
+        - column:
+            name: valor_previsto
+            type: numeric(38, 2)
+        - column:
+            constraints:
+              nullable: false
+            name: paciente_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: procedimento_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: profissional_id
+            type: BIGINT
+        tableName: agendamento
+- changeSet:
+    id: 1776077714730-2
+    author: carlos (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: evolucoes_clinicasPK
+            name: id
+            type: BIGINT
+        - column:
+            name: ativo
+            type: BOOLEAN
+        - column:
+            name: data_atualizacao
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: data_criacao
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: data_registro
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: diagnostico_hipotetico
+            type: VARCHAR(255)
+        - column:
+            name: relato_clinico
+            type: TEXT
+        - column:
+            constraints:
+              nullable: false
+            name: agendamento_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: paciente_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: profissional_id
+            type: BIGINT
+        tableName: evolucoes_clinicas
+- changeSet:
+    id: 1776077714730-3
+    author: carlos (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: insumoPK
+            name: id
+            type: BIGINT
+        - column:
+            name: ativo
+            type: BOOLEAN
+        - column:
+            name: data_atualizacao
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: data_criacao
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: nome
+            type: VARCHAR(255)
+        - column:
+            name: quantidade_estoque
+            type: FLOAT(53)
+        - column:
+            name: unidade_medida
+            type: VARCHAR(255)
+        tableName: insumo
+- changeSet:
+    id: 1776077714730-4
+    author: carlos (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: local_aplicacaoPK
+            name: id
+            type: BIGINT
+        - column:
+            name: ativo
+            type: BOOLEAN
+        - column:
+            name: data_atualizacao
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: data_criacao
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: nome
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: pre_definido
+            type: BOOLEAN
+        tableName: local_aplicacao
+- changeSet:
+    id: 1776077714730-5
+    author: carlos (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            name: nome_responsavel
+            type: VARCHAR(255)
+        - column:
+            name: observacoes_gerais
+            type: VARCHAR(255)
+        - column:
+            name: tipo_sanguineo
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: pacientePK
+            name: id
+            type: BIGINT
+        tableName: paciente
+- changeSet:
+    id: 1776077714730-6
+    author: carlos (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: pessoaPK
+            name: id
+            type: BIGINT
+        - column:
+            name: ativo
+            type: BOOLEAN
+        - column:
+            name: data_atualizacao
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: data_criacao
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: cpf
+            type: VARCHAR(255)
+        - column:
+            name: data_nascimento
+            type: date
+        - column:
+            name: email
+            type: VARCHAR(255)
+        - column:
+            name: bairro
+            type: VARCHAR(255)
+        - column:
+            name: cep
+            type: VARCHAR(255)
+        - column:
+            name: cidade
+            type: VARCHAR(255)
+        - column:
+            name: complemento
+            type: VARCHAR(255)
+        - column:
+            name: estado
+            type: VARCHAR(255)
+        - column:
+            name: logradouro
+            type: VARCHAR(255)
+        - column:
+            name: numero
+            type: VARCHAR(255)
+        - column:
+            name: nome
+            type: VARCHAR(255)
+        - column:
+            name: telefone
+            type: VARCHAR(255)
+        tableName: pessoa
+- changeSet:
+    id: 1776077714730-7
+    author: carlos (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: procedimentoPK
+            name: id
+            type: BIGINT
+        - column:
+            name: ativo
+            type: BOOLEAN
+        - column:
+            name: data_atualizacao
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: data_criacao
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: duracao_minutos
+            type: INTEGER
+        - column:
+            name: nome
+            type: VARCHAR(255)
+        - column:
+            name: preco_sugerido
+            type: numeric(38, 2)
+        tableName: procedimento
+- changeSet:
+    id: 1776077714730-8
+    author: carlos (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: usuariosPK
+            name: id
+            type: BIGINT
+        - column:
+            name: ativo
+            type: BOOLEAN
+        - column:
+            name: data_atualizacao
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: data_criacao
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: email
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: login
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: nome
+            type: VARCHAR(255)
+        - column:
+            name: perfil
+            type: VARCHAR(255)
+        - column:
+            name: registro_profissional
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: senha
+            type: VARCHAR(255)
+        tableName: usuarios
+- changeSet:
+    id: 1776077714730-9
+    author: carlos (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: agendamento_id
+        constraintName: UC_EVOLUCOES_CLINICASAGENDAMENTO_ID_COL
+        tableName: evolucoes_clinicas
+- changeSet:
+    id: 1776077714730-10
+    author: carlos (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: nome
+        constraintName: UC_LOCAL_APLICACAONOME_COL
+        tableName: local_aplicacao
+- changeSet:
+    id: 1776077714730-11
+    author: carlos (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: cpf
+        constraintName: UC_PESSOACPF_COL
+        tableName: pessoa
+- changeSet:
+    id: 1776077714730-12
+    author: carlos (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: login
+        constraintName: UC_USUARIOSLOGIN_COL
+        tableName: usuarios
+- changeSet:
+    id: 1776077714730-13
+    author: carlos (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: profissional_id
+        baseTableName: agendamento
+        constraintName: FK2q3wfymm6lsi5gdu9j2nd0b5h
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: usuarios
+        validate: true
+- changeSet:
+    id: 1776077714730-14
+    author: carlos (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: agendamento_id
+        baseTableName: evolucoes_clinicas
+        constraintName: FK2tw5krn9c8cugglgqxxoqy2cd
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: agendamento
+        validate: true
+- changeSet:
+    id: 1776077714730-15
+    author: carlos (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: paciente_id
+        baseTableName: agendamento
+        constraintName: FK72wv1pjcpc2c0g6dy3yq39td7
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: paciente
+        validate: true
+- changeSet:
+    id: 1776077714730-16
+    author: carlos (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: paciente_id
+        baseTableName: evolucoes_clinicas
+        constraintName: FKid9594lkapqbndw28gwqdf0hp
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: paciente
+        validate: true
+- changeSet:
+    id: 1776077714730-17
+    author: carlos (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: profissional_id
+        baseTableName: evolucoes_clinicas
+        constraintName: FKjoymblqrdtxq3n592josxledo
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: usuarios
+        validate: true
+- changeSet:
+    id: 1776077714730-18
+    author: carlos (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: procedimento_id
+        baseTableName: agendamento
+        constraintName: FKn6fa4tt2xkft1vjffrm0qjbqr
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: procedimento
+        validate: true
+- changeSet:
+    id: 1776077714730-19
+    author: carlos (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: id
+        baseTableName: paciente
+        constraintName: FKs90bfv7asc6k39qiwilkekb2k
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: pessoa
+        validate: true
+
