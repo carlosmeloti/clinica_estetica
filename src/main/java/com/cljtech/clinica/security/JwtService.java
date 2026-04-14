@@ -60,10 +60,10 @@ public class JwtService {
     // 5. Faz o "parse" do token usando a chave secreta
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
-                .verifyWith(getSignInKey()) // Sintaxe jjwt 0.12.x
+                .verifyWith(getSignInKey()) // Mudou de setSigningKey para verifyWith
                 .build()
-                .parseSignedClaims(token)
-                .getPayload();
+                .parseSignedClaims(token)   // Mudou de parseClaimsJws
+                .getPayload();              // Mudou de getBody
     }
 
 

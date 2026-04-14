@@ -1,5 +1,6 @@
-package com.cljtech.clinica.controiller;
+package com.cljtech.clinica.controiller.impl;
 
+import com.cljtech.clinica.controiller.UsuarioController;
 import com.cljtech.clinica.data.Usuario;
 import com.cljtech.clinica.service.UsuarioService;
 import org.springframework.http.ResponseEntity;
