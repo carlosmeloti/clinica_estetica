@@ -2,6 +2,7 @@ package com.cljtech.clinica.controiller;
 
 
 import com.cljtech.clinica.data.Usuario;
+import com.cljtech.clinica.records.UsuarioRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +11,7 @@ import java.util.List;
 public interface UsuarioController {
 
     @PostMapping
-    ResponseEntity<Usuario> criar(@RequestBody Usuario usuario);
+    ResponseEntity<Void> criar(@RequestBody UsuarioRequest usuario);
 
     @GetMapping
     ResponseEntity<List<Usuario>> listar();
