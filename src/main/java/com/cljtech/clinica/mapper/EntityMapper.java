@@ -1,7 +1,9 @@
 package com.cljtech.clinica.mapper;
 
+import com.cljtech.clinica.data.Insumo;
 import com.cljtech.clinica.data.LocalAplicacao;
 import com.cljtech.clinica.data.Usuario;
+import com.cljtech.clinica.records.InsumoRequestResponse;
 import com.cljtech.clinica.records.LocalAplicacaoRequestResponse;
 import com.cljtech.clinica.records.UsuarioRequest;
 import com.cljtech.clinica.records.UsuarioResponse;
@@ -21,5 +23,11 @@ public interface EntityMapper {
     List<LocalAplicacao> toLocalAplicacao(List<LocalAplicacaoRequestResponse> requests);
     LocalAplicacaoRequestResponse toLocalAplicacaoRequest(LocalAplicacao localAplicacao);
     List<LocalAplicacaoRequestResponse> toLocalAplicacaoRequest(List<LocalAplicacao> localAplicacoes);
+
+    List<InsumoRequestResponse> toInsumoRequestResponse(List<Insumo> insumos);
+    Insumo toInsumo(InsumoRequestResponse request);
+
+    List<Insumo> toInsumo(List<InsumoRequestResponse> requests);
+    InsumoRequestResponse toInsumoRequestResponse(Insumo insumo);
 
 }
