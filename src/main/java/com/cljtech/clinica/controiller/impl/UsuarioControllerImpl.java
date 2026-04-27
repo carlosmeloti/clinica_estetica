@@ -1,7 +1,6 @@
 package com.cljtech.clinica.controiller.impl;
 
 import com.cljtech.clinica.controiller.UsuarioController;
-import com.cljtech.clinica.data.Usuario;
 import com.cljtech.clinica.mapper.EntityMapper;
 import com.cljtech.clinica.records.UsuarioRequest;
 import com.cljtech.clinica.records.UsuarioResponse;
@@ -32,7 +31,7 @@ public class UsuarioControllerImpl implements UsuarioController {
     }
 
     @Override
-    public ResponseEntity<Usuario> buscarPorLogin(String login) {
+    public ResponseEntity<UsuarioResponse> buscarPorLogin(String login) {
         return ResponseEntity.ok(usuarioService.buscarPorLogin(login));
     }
 }
