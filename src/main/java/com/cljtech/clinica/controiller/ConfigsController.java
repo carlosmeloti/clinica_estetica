@@ -1,17 +1,18 @@
 package com.cljtech.clinica.controiller;
 
-import com.cljtech.clinica.records.LocalAplicacaoRequest;
-import com.cljtech.clinica.records.UsuarioRequest;
+import com.cljtech.clinica.records.LocalAplicacaoRequestResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/configs")
 public interface ConfigsController {
 
-    @PostMapping("/locaisaplicacao")
-    ResponseEntity<Void> criarLocaisAplicacao(@RequestBody LocalAplicacaoRequest request);
+    @PostMapping("/locaisaplicacao/criar")
+    ResponseEntity<Void> criarLocaisAplicacao(@RequestBody LocalAplicacaoRequestResponse request);
+
+    @GetMapping("/locaisaplicacao/listar")
+    ResponseEntity <List<LocalAplicacaoRequestResponse>> listarLocaisAplicacao();
 }
