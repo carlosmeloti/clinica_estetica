@@ -4,6 +4,7 @@ import com.cljtech.clinica.controiller.UsuarioController;
 import com.cljtech.clinica.data.Usuario;
 import com.cljtech.clinica.mapper.EntityMapper;
 import com.cljtech.clinica.records.UsuarioRequest;
+import com.cljtech.clinica.records.UsuarioResponse;
 import com.cljtech.clinica.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,8 @@ public class UsuarioControllerImpl implements UsuarioController {
     }
 
     @Override
-    public ResponseEntity<List<Usuario>> listar() {
-        return ResponseEntity.ok(usuarioService.listarTodos());
+    public ResponseEntity<List<UsuarioResponse>> listar() {
+        return ResponseEntity.ok(entityMapper.toUsuarioResponse(usuarioService.listarTodos()));
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.cljtech.clinica.controiller;
 
 import com.cljtech.clinica.data.Usuario;
 import com.cljtech.clinica.records.UsuarioRequest;
+import com.cljtech.clinica.records.UsuarioResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +15,8 @@ public interface UsuarioController {
     @PostMapping("/criar")
     ResponseEntity<Void> criar(@RequestBody UsuarioRequest usuario);
 
-    @GetMapping
-    ResponseEntity<List<Usuario>> listar();
+    @GetMapping("/listar")
+    ResponseEntity<List<UsuarioResponse>> listar();
 
     @GetMapping("/{id}")
     ResponseEntity<Usuario> buscarPorLogin(@PathVariable String login);
