@@ -26,8 +26,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/error").permitAll()
-                        .requestMatchers("/api/usuarios/criar").permitAll()
-                        .requestMatchers("/api/auth/login").permitAll()// Público
+                        .requestMatchers("/usuarios/criar").permitAll()
+                        .requestMatchers("/auth/login").permitAll()// Público
                         .anyRequest().authenticated()               // Protegido
                 )
                 // Adiciona o filtro antes do filtro padrão de usuário/senha
