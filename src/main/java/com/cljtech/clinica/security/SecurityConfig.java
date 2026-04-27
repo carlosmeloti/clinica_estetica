@@ -25,7 +25,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // CSRF costuma ser desabilitado para APIs JWT
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // Público
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/api/usuarios/criar").permitAll()
+                        .requestMatchers("/api/auth/login").permitAll()// Público
                         .anyRequest().authenticated()               // Protegido
                 )
                 // Adiciona o filtro antes do filtro padrão de usuário/senha

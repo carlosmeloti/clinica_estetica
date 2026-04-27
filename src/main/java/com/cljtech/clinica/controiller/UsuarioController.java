@@ -7,10 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@RequestMapping("/admin/usuarios")
+@RestController
+@RequestMapping("/api/usuarios")
 public interface UsuarioController {
 
-    @PostMapping
+    @PostMapping("/criar")
     ResponseEntity<Void> criar(@RequestBody UsuarioRequest usuario);
 
     @GetMapping
