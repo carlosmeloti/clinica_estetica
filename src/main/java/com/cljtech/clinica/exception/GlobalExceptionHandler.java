@@ -1,6 +1,6 @@
 package com.cljtech.clinica.exception;
 
-import com.cljtech.clinica.records.ErroResponse;
+import com.cljtech.clinica.model.records.ErroResponse;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

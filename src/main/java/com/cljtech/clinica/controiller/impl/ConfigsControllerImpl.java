@@ -1,10 +1,8 @@
 package com.cljtech.clinica.controiller.impl;
 
 import com.cljtech.clinica.controiller.ConfigsController;
-import com.cljtech.clinica.data.repository.LocalAplicacaoRepository;
-import com.cljtech.clinica.mapper.EntityMapper;
-import com.cljtech.clinica.records.InsumoRequestResponse;
-import com.cljtech.clinica.records.LocalAplicacaoRequestResponse;
+import com.cljtech.clinica.model.records.InsumoRequestResponse;
+import com.cljtech.clinica.model.records.LocalAplicacaoRequestResponse;
 import com.cljtech.clinica.service.ConfigsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

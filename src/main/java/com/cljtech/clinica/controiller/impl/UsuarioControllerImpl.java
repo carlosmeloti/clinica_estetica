@@ -2,8 +2,8 @@ package com.cljtech.clinica.controiller.impl;
 
 import com.cljtech.clinica.controiller.UsuarioController;
 import com.cljtech.clinica.mapper.EntityMapper;
-import com.cljtech.clinica.records.UsuarioRequest;
-import com.cljtech.clinica.records.UsuarioResponse;
+import com.cljtech.clinica.model.records.UsuarioRequest;
+import com.cljtech.clinica.model.records.UsuarioResponse;
 import com.cljtech.clinica.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

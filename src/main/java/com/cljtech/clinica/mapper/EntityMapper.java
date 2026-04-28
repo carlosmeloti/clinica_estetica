@@ -3,10 +3,10 @@ package com.cljtech.clinica.mapper;
 import com.cljtech.clinica.data.Insumo;
 import com.cljtech.clinica.data.LocalAplicacao;
 import com.cljtech.clinica.data.Usuario;
-import com.cljtech.clinica.records.InsumoRequestResponse;
-import com.cljtech.clinica.records.LocalAplicacaoRequestResponse;
-import com.cljtech.clinica.records.UsuarioRequest;
-import com.cljtech.clinica.records.UsuarioResponse;
+import com.cljtech.clinica.model.records.InsumoRequestResponse;
+import com.cljtech.clinica.model.records.LocalAplicacaoRequestResponse;
+import com.cljtech.clinica.model.records.UsuarioRequest;
+import com.cljtech.clinica.model.records.UsuarioResponse;
 import org.mapstruct.Mapper;
 
 import java.util.List;

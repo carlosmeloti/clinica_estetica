@@ -1,7 +1,7 @@
 package com.cljtech.clinica.service;
 
 import com.cljtech.clinica.data.Usuario;
-import com.cljtech.clinica.records.UsuarioResponse;
+import com.cljtech.clinica.model.records.UsuarioResponse;
 
 import java.util.List;
 

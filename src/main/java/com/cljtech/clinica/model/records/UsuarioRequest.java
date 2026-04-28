@@ -1,4 +1,4 @@
-package com.cljtech.clinica.records;
+package com.cljtech.clinica.model.records;
 
 import com.cljtech.clinica.model.enuns.PerfilUsuario;
 

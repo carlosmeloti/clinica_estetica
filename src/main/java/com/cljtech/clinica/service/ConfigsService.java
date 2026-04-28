@@ -1,7 +1,7 @@
 package com.cljtech.clinica.service;
 
-import com.cljtech.clinica.records.InsumoRequestResponse;
-import com.cljtech.clinica.records.LocalAplicacaoRequestResponse;
+import com.cljtech.clinica.model.records.InsumoRequestResponse;
+import com.cljtech.clinica.model.records.LocalAplicacaoRequestResponse;
 
 import java.util.List;
 

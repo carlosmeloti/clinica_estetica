@@ -1,7 +1,7 @@
 package com.cljtech.clinica.service.impl;
 
-import com.cljtech.clinica.records.LoginRequest;
-import com.cljtech.clinica.records.TokenResponse;
+import com.cljtech.clinica.model.records.LoginRequest;
+import com.cljtech.clinica.model.records.TokenResponse;
 import com.cljtech.clinica.security.JwtService;
 import com.cljtech.clinica.service.AuthService;
 import lombok.RequiredArgsConstructor;

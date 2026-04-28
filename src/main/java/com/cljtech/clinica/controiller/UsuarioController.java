@@ -1,8 +1,8 @@
 package com.cljtech.clinica.controiller;
 
 
-import com.cljtech.clinica.records.UsuarioRequest;
-import com.cljtech.clinica.records.UsuarioResponse;
+import com.cljtech.clinica.model.records.UsuarioRequest;
+import com.cljtech.clinica.model.records.UsuarioResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

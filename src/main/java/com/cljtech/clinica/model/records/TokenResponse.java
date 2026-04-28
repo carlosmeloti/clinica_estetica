@@ -1,3 +1,3 @@
-package com.cljtech.clinica.records;
+package com.cljtech.clinica.model.records;
 
 public record TokenResponse(String token) {}
