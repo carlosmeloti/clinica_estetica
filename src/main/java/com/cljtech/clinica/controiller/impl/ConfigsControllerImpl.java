@@ -3,6 +3,7 @@ package com.cljtech.clinica.controiller.impl;
 import com.cljtech.clinica.controiller.ConfigsController;
 import com.cljtech.clinica.model.records.InsumoRequestResponse;
 import com.cljtech.clinica.model.records.LocalAplicacaoRequestResponse;
+import com.cljtech.clinica.model.records.ProcedimentoRequestResponse;
 import com.cljtech.clinica.service.ConfigsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,4 +39,17 @@ public class ConfigsControllerImpl implements ConfigsController {
     public ResponseEntity<List<InsumoRequestResponse>> listarInsumos() {
         return ResponseEntity.ok(configsService.listarInsumos());
     }
+
+    @Override
+    public ResponseEntity<Void> criarProcedimentos(ProcedimentoRequestResponse request) {
+        configsService.criarProcedimentos(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Override
+    public ResponseEntity<List<ProcedimentoRequestResponse>> listarProcedimentos() {
+        return ResponseEntity.ok(configsService.listarProcedimentos());
+    }
+
+
 }

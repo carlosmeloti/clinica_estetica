@@ -2,9 +2,11 @@ package com.cljtech.clinica.service.impl;
 
 import com.cljtech.clinica.data.repository.InsumosRepository;
 import com.cljtech.clinica.data.repository.LocalAplicacaoRepository;
+import com.cljtech.clinica.data.repository.ProcedimentoRepository;
 import com.cljtech.clinica.mapper.EntityMapper;
 import com.cljtech.clinica.model.records.InsumoRequestResponse;
 import com.cljtech.clinica.model.records.LocalAplicacaoRequestResponse;
+import com.cljtech.clinica.model.records.ProcedimentoRequestResponse;
 import com.cljtech.clinica.service.ConfigsService;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ public class ConfigsServiceImpl implements ConfigsService {
 
     private final LocalAplicacaoRepository localAplicacaoRepository;
     private final InsumosRepository insumosRepository;
+    private final ProcedimentoRepository procedimentoRepository;
     private final EntityMapper entityMapper;
 
     @Override
@@ -42,5 +45,15 @@ public class ConfigsServiceImpl implements ConfigsService {
     @Transactional(readOnly = true)
     public List<InsumoRequestResponse> listarInsumos() {
         return entityMapper.toInsumoRequestResponse(insumosRepository.findAll());
+    }
+
+    @Override
+    public void criarProcedimentos(ProcedimentoRequestResponse request) {
+        procedimentoRepository.save(entityMapper.toProcedimento(request));
+    }
+
+    @Override
+    public List<ProcedimentoRequestResponse> listarProcedimentos() {
+        return entityMapper.toProcedimentoRequestResponse(procedimentoRepository.findAll());
     }
 }
