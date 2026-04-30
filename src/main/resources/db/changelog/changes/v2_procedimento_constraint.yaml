@@ -1,0 +1,12 @@
+databaseChangeLog:
+    - changeSet:
+          id: 1776077714730-20
+          author: carlos
+          changes:
+              - sql:
+                    sql: |
+                        ALTER TABLE procedimento
+                        ALTER COLUMN nome SET NOT NULL;
+                        
+                        ALTER TABLE procedimento
+                        ADD CONSTRAINT UC_PROCEDIMENTO_NOME_COL UNIQUE (nome);
