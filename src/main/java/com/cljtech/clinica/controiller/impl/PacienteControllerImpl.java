@@ -1,7 +1,6 @@
 package com.cljtech.clinica.controiller.impl;
 
 import com.cljtech.clinica.controiller.PacienteController;
-import com.cljtech.clinica.data.Paciente;
 import com.cljtech.clinica.model.records.PacienteRequestResponse;
 import com.cljtech.clinica.service.PacienteService;
 import lombok.RequiredArgsConstructor;
