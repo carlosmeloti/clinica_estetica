@@ -29,7 +29,11 @@ public class PacienteControllerImpl implements PacienteController {
 
     @Override
     public ResponseEntity<Page<PacienteRequestResponse>> listar(Pageable pageable) {
-        return null;
+        Page<PacienteRequestResponse> pacientes = pacienteService.listar(pageable);
+        if (pacientes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(pacientes);
     }
 
     @Override
