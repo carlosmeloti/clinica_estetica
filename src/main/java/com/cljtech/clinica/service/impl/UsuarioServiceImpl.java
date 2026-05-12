@@ -19,13 +19,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final PasswordEncoder passwordEncoder;
     private final EntityMapper entityMapper;
 
-    public Usuario salvar(Usuario usuario) {
+    public void salvar(Usuario usuario) {
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
-        return usuarioRepository.save(usuario);
     }
 
-    public List<Usuario> listarTodos() {
-        return usuarioRepository.findAll();
+    public List<UsuarioResponse> listarTodos() {
+        return entityMapper.toUsuarioResponse(usuarioRepository.findAll());
     }
 
     public UsuarioResponse buscarPorLogin(String login) {

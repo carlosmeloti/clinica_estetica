@@ -2,6 +2,8 @@ package com.cljtech.clinica.controiller;
 
 import com.cljtech.clinica.data.Paciente;
 import com.cljtech.clinica.model.records.PacienteRequestResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,13 +15,13 @@ public interface PacienteController {
     ResponseEntity<Void> criar(@RequestBody PacienteRequestResponse paciente);
 
     @GetMapping("/buscar/{id}")
-    ResponseEntity<Paciente> buscar(@PathVariable Long id);
+    ResponseEntity<PacienteRequestResponse> buscar(@PathVariable Long id);
 
     @GetMapping("/listar")
-    ResponseEntity<Iterable<Paciente>> listar();
+    ResponseEntity<Page<PacienteRequestResponse>> listar(Pageable pageable);
 
     @PutMapping("/atualizar")
-    ResponseEntity<Void> atualizar(@RequestBody Paciente paciente);
+    ResponseEntity<Void> atualizar(@RequestBody PacienteRequestResponse paciente);
 
     @DeleteMapping("/deletar/{id}")
     ResponseEntity<Void> deletar(@PathVariable Long id);

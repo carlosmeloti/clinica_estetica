@@ -7,8 +7,8 @@ import java.util.List;
 
 
 public interface UsuarioService {
-    Usuario salvar(Usuario usuario);
-    List<Usuario> listarTodos();
+    void salvar(Usuario usuario);
+    List<UsuarioResponse> listarTodos();
     UsuarioResponse buscarPorLogin(String login);
 }
 

@@ -27,7 +27,7 @@ public class UsuarioControllerImpl implements UsuarioController {
 
     @Override
     public ResponseEntity<List<UsuarioResponse>> listar() {
-        return ResponseEntity.ok(entityMapper.toUsuarioResponse(usuarioService.listarTodos()));
+        return ResponseEntity.ok(usuarioService.listarTodos());
     }
 
     @Override

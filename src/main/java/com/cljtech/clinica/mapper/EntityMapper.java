@@ -1,9 +1,6 @@
 package com.cljtech.clinica.mapper;
 
-import com.cljtech.clinica.data.Insumo;
-import com.cljtech.clinica.data.LocalAplicacao;
-import com.cljtech.clinica.data.Procedimento;
-import com.cljtech.clinica.data.Usuario;
+import com.cljtech.clinica.data.*;
 import com.cljtech.clinica.model.records.*;
 import org.mapstruct.Mapper;
 
@@ -32,5 +29,10 @@ public interface EntityMapper {
     List<Procedimento> toProcedimento(List<ProcedimentoRequestResponse> requests);
     ProcedimentoRequestResponse toProcedimentoRequestResponse(Procedimento procedimento);
     List<ProcedimentoRequestResponse> toProcedimentoRequestResponse(List<Procedimento> procedimentos);
+
+    Paciente toPaciente(PacienteRequestResponse request);
+    PacienteRequestResponse toPacienteRequestResponse(Paciente paciente);
+    List<PacienteRequestResponse> toPacienteRequestResponse(List<Paciente> pacientes);
+    List<Paciente> toPaciente(List<PacienteRequestResponse> requests);
 
 }

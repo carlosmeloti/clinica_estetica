@@ -3,16 +3,20 @@ package com.cljtech.clinica.service;
 
 import com.cljtech.clinica.data.Paciente;
 import com.cljtech.clinica.model.records.PacienteRequestResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface PacienteService {
 
-    void criar(PacienteRequestResponse paciente);
+    void salvar(PacienteRequestResponse pacienteRequestResponse);
 
-    Paciente buscar(Long id);
+    PacienteRequestResponse buscar(Long id);
 
-    Iterable<Paciente> listar();
+    Page<PacienteRequestResponse> listar(Pageable pageable);
 
-    void atualizar(Paciente paciente);
+    void atualizar(PacienteRequestResponse pacienteRequestResponse);
 
     void deletar(Long id);
 }
