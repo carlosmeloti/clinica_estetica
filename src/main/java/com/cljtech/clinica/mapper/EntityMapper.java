@@ -3,6 +3,7 @@ package com.cljtech.clinica.mapper;
 import com.cljtech.clinica.data.*;
 import com.cljtech.clinica.model.records.*;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -34,5 +35,18 @@ public interface EntityMapper {
     PacienteRequestResponse toPacienteRequestResponse(Paciente paciente);
     List<PacienteRequestResponse> toPacienteRequestResponse(List<Paciente> pacientes);
     List<Paciente> toPaciente(List<PacienteRequestResponse> requests);
+
+
+    @Mapping(source = "paciente.id", target = "pacienteId")
+    @Mapping(source = "profissional.id", target = "profissionalId")
+    @Mapping(source = "procedimento.id", target = "procedimentoId")
+    AgendamentoRequestResponse toAgendamentoRequestResponse(Agendamento agendamento);
+
+    @Mapping(source = "pacienteId", target = "paciente.id")
+    @Mapping(source = "profissionalId", target = "profissional.id")
+    @Mapping(source = "procedimentoId", target = "procedimento.id")
+    Agendamento toAgendamento(AgendamentoRequestResponse request);
+    List<AgendamentoRequestResponse> toAgendamentoRequestResponse(List<Agendamento> agendamentos);
+    List<Agendamento> toAgendamento(List<AgendamentoRequestResponse> requests);
 
 }
