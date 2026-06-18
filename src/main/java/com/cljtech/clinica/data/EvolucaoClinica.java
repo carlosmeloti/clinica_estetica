@@ -11,25 +11,26 @@ import java.time.LocalDateTime;
 @Data
 public class EvolucaoClinica extends EntidadeBase {
 
-    @OneToOne
-    @JoinColumn(name = "agendamento_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "agendamento_id", nullable = false, unique = true)
     private Agendamento agendamento;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "paciente_id", nullable = false)
     private Paciente paciente;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profissional_id", nullable = false)
     private Usuario profissional;
 
-    @Column(nullable = false)
+    @Column(name = "data_registro", nullable = false)
     private LocalDateTime dataRegistro;
 
     @Lob
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "relato_clinico", nullable = false, columnDefinition = "TEXT")
     private String relatoClinico;
 
+    @Column(name = "diagnostico_hipotetico")
     private String diagnosticoHipotetico;
 
 }
