@@ -41,8 +41,8 @@ public class AgendamentoControllerImpl implements AgendamentoController {
     }
 
     @Override
-    public ResponseEntity<AgendamentoRequestResponse> atualizar(AgendamentoRequestResponse agendamentoRequestResponse) {
-      AgendamentoRequestResponse agendamento = agendamentoService.atualizar(agendamentoRequestResponse);
+    public ResponseEntity<AgendamentoRequestResponse> atualizar(Long id, AgendamentoRequestResponse agendamentoRequestResponse) {
+      AgendamentoRequestResponse agendamento = agendamentoService.atualizar(id, agendamentoRequestResponse);
        return ResponseEntity.ok(agendamento);
     }
 }

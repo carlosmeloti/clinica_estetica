@@ -48,8 +48,14 @@ public class AgendamentoServiceImpl implements AgendamentoService {
     }
 
     @Override
-    public AgendamentoRequestResponse atualizar(AgendamentoRequestResponse agendamentoRequestResponse) {
-        Agendamento agendamento = agendamentoRepository.save(entityMapper.toAgendamento(agendamentoRequestResponse));
-        return entityMapper.toAgendamentoRequestResponse(agendamento);
+    public AgendamentoRequestResponse atualizar(Long id, AgendamentoRequestResponse agendamentoRequestResponse) {
+        Agendamento agendamento = agendamentoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Agendamento não encontrado"));
+
+        entityMapper.updateAgendamentoFromRequest(agendamentoRequestResponse, agendamento);
+
+        Agendamento salvo = agendamentoRepository.save(agendamento);
+
+        return entityMapper.toAgendamentoRequestResponse(salvo);
     }
 }
