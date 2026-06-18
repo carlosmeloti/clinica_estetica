@@ -24,6 +24,6 @@ public interface AgendamentoController {
     @GetMapping("/listar/todos")
     ResponseEntity<List<AgendamentoRequestResponse>> listarTodos();
 
-    @PutMapping("/atualizar/{id}")
-    ResponseEntity<AgendamentoRequestResponse> atualizar(@RequestBody @PathVariable Long id,AgendamentoRequestResponse agendamentoRequestResponse);
+    @PatchMapping("/atualizar/{id}")
+    ResponseEntity<AgendamentoRequestResponse> atualizar(@PathVariable Long id,@RequestBody AgendamentoRequestResponse agendamentoRequestResponse);
 }

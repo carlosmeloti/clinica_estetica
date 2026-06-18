@@ -2,9 +2,7 @@ package com.cljtech.clinica.mapper;
 
 import com.cljtech.clinica.data.*;
 import com.cljtech.clinica.model.records.*;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -52,6 +50,7 @@ public interface EntityMapper {
     @Mapping(source = "pacienteId", target = "paciente.id")
     @Mapping(source = "profissionalId", target = "profissional.id")
     @Mapping(source = "procedimentoId", target = "procedimento.id")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateAgendamentoFromRequest(
             AgendamentoRequestResponse request,
             @MappingTarget Agendamento agendamento
