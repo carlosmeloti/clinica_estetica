@@ -7,9 +7,11 @@ import com.cljtech.clinica.model.records.EvolucaoClinicaRequestResponse;
 import com.cljtech.clinica.service.EvolucaoClinicaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class EvolucaoClinicaServiceImpl implements EvolucaoClinicaService {
 
     private final EvolucaoClinicaRepository evolucaoClinicaRepository;

@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class AgendamentoControllerImpl implements AgendamentoController {
@@ -15,5 +18,16 @@ public class AgendamentoControllerImpl implements AgendamentoController {
     @Override
     public ResponseEntity<AgendamentoRequestResponse> criar(AgendamentoRequestResponse agendamentoRequestResponse) {
         return ResponseEntity.ok(agendamentoService.criar(agendamentoRequestResponse));
+    }
+
+    @Override
+    public ResponseEntity<List<AgendamentoRequestResponse>> listarPorDiaEProfissional(Long profissionalId, LocalDate data) {
+        List<AgendamentoRequestResponse> agendamentos = agendamentoService.listarPorDiaEProfissional(profissionalId, data);
+
+        if (agendamentos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(agendamentos);
     }
 }

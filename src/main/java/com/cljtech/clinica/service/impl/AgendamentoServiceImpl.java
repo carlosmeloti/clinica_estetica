@@ -7,9 +7,15 @@ import com.cljtech.clinica.model.records.AgendamentoRequestResponse;
 import com.cljtech.clinica.service.AgendamentoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AgendamentoServiceImpl implements AgendamentoService {
 
     private final AgendamentoRepository agendamentoRepository;
@@ -18,5 +24,18 @@ public class AgendamentoServiceImpl implements AgendamentoService {
     public AgendamentoRequestResponse criar(AgendamentoRequestResponse agendamentoRequestResponse) {
         Agendamento agendamento = agendamentoRepository.save(entityMapper.toAgendamento(agendamentoRequestResponse));
         return entityMapper.toAgendamentoRequestResponse(agendamento);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AgendamentoRequestResponse> listarPorDiaEProfissional(Long profissionalId, LocalDate data) {
+        return agendamentoRepository.findByProfissionalIdAndDataHoraInicioBetween(
+                        profissionalId,
+                        data.atStartOfDay(),
+                        data.atTime(LocalTime.MAX)
+                )
+                .stream()
+                .map(entityMapper::toAgendamentoRequestResponse)
+                .toList();
     }
 }
