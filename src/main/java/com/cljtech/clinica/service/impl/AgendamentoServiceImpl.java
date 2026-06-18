@@ -40,6 +40,7 @@ public class AgendamentoServiceImpl implements AgendamentoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<AgendamentoRequestResponse> listarTodos() {
         return agendamentoRepository.findAll()
                 .stream()
