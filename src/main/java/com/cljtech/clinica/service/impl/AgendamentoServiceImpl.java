@@ -38,4 +38,18 @@ public class AgendamentoServiceImpl implements AgendamentoService {
                 .map(entityMapper::toAgendamentoRequestResponse)
                 .toList();
     }
+
+    @Override
+    public List<AgendamentoRequestResponse> listarTodos() {
+        return agendamentoRepository.findAll()
+                .stream()
+                .map(entityMapper::toAgendamentoRequestResponse)
+                .toList();
+    }
+
+    @Override
+    public AgendamentoRequestResponse atualizar(AgendamentoRequestResponse agendamentoRequestResponse) {
+        Agendamento agendamento = agendamentoRepository.save(entityMapper.toAgendamento(agendamentoRequestResponse));
+        return entityMapper.toAgendamentoRequestResponse(agendamento);
+    }
 }

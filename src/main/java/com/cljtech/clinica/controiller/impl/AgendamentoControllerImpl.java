@@ -30,4 +30,19 @@ public class AgendamentoControllerImpl implements AgendamentoController {
 
         return ResponseEntity.ok(agendamentos);
     }
+
+    @Override
+    public ResponseEntity<List<AgendamentoRequestResponse>> listarTodos() {
+        List<AgendamentoRequestResponse> agendamentos = agendamentoService.listarTodos();
+        if (agendamentos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(agendamentos);
+    }
+
+    @Override
+    public ResponseEntity<AgendamentoRequestResponse> atualizar(AgendamentoRequestResponse agendamentoRequestResponse) {
+      AgendamentoRequestResponse agendamento = agendamentoService.atualizar(agendamentoRequestResponse);
+       return ResponseEntity.ok(agendamento);
+    }
 }

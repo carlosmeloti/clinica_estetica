@@ -20,4 +20,10 @@ public interface AgendamentoController {
             @RequestParam Long profissionalId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data
     );
+
+    @GetMapping("/listar/todos")
+    ResponseEntity<List<AgendamentoRequestResponse>> listarTodos();
+
+    @PutMapping("/atualizar")
+    ResponseEntity<AgendamentoRequestResponse> atualizar(@RequestBody AgendamentoRequestResponse agendamentoRequestResponse);
 }

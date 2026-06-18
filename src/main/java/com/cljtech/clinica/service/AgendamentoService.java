@@ -9,5 +9,7 @@ public interface AgendamentoService {
 
     AgendamentoRequestResponse criar(AgendamentoRequestResponse agendamentoRequestResponse);
     List<AgendamentoRequestResponse> listarPorDiaEProfissional(Long profissionalId, LocalDate data);
+    List<AgendamentoRequestResponse> listarTodos();
+    AgendamentoRequestResponse atualizar(AgendamentoRequestResponse agendamentoRequestResponse);
 
 }
