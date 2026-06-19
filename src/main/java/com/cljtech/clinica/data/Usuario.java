@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "usuarios", schema = "clinica")
 @Data
 public class Usuario extends EntidadeBase implements UserDetails {
 
