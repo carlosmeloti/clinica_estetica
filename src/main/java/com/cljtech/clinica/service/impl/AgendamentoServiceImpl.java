@@ -3,6 +3,7 @@ package com.cljtech.clinica.service.impl;
 import com.cljtech.clinica.data.Agendamento;
 import com.cljtech.clinica.data.repository.AgendamentoRepository;
 import com.cljtech.clinica.mapper.EntityMapper;
+import com.cljtech.clinica.model.enuns.StatusAgendamento;
 import com.cljtech.clinica.model.records.AgendamentoRequestResponse;
 import com.cljtech.clinica.service.AgendamentoService;
 import lombok.RequiredArgsConstructor;
@@ -58,5 +59,13 @@ public class AgendamentoServiceImpl implements AgendamentoService {
         Agendamento salvo = agendamentoRepository.save(agendamento);
 
         return entityMapper.toAgendamentoRequestResponse(salvo);
+    }
+
+    @Override
+    public List<AgendamentoRequestResponse> listarPorStatus(StatusAgendamento status) {
+        return agendamentoRepository.findByStatus(status)
+                .stream()
+                .map(entityMapper::toAgendamentoRequestResponse)
+                .toList();
     }
 }

@@ -1,5 +1,6 @@
 package com.cljtech.clinica.controiller;
 
+import com.cljtech.clinica.model.enuns.StatusAgendamento;
 import com.cljtech.clinica.model.records.AgendamentoRequestResponse;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,9 @@ public interface AgendamentoController {
             @RequestParam Long profissionalId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data
     );
+
+    @GetMapping("/listar/status")
+    ResponseEntity<List<AgendamentoRequestResponse>> listarPorStatus(@RequestParam StatusAgendamento status);
 
     @GetMapping("/listar/todos")
     ResponseEntity<List<AgendamentoRequestResponse>> listarTodos();

@@ -1,6 +1,7 @@
 package com.cljtech.clinica.controiller.impl;
 
 import com.cljtech.clinica.controiller.AgendamentoController;
+import com.cljtech.clinica.model.enuns.StatusAgendamento;
 import com.cljtech.clinica.model.records.AgendamentoRequestResponse;
 import com.cljtech.clinica.service.AgendamentoService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,18 @@ public class AgendamentoControllerImpl implements AgendamentoController {
     @Override
     public ResponseEntity<List<AgendamentoRequestResponse>> listarPorDiaEProfissional(Long profissionalId, LocalDate data) {
         List<AgendamentoRequestResponse> agendamentos = agendamentoService.listarPorDiaEProfissional(profissionalId, data);
+
+        if (agendamentos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(agendamentos);
+    }
+
+    @Override
+    public ResponseEntity<List<AgendamentoRequestResponse>> listarPorStatus(StatusAgendamento status) {
+
+        List<AgendamentoRequestResponse> agendamentos = agendamentoService.listarPorStatus(status);
 
         if (agendamentos.isEmpty()) {
             return ResponseEntity.noContent().build();

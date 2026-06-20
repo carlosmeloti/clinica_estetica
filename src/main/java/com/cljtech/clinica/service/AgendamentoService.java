@@ -1,5 +1,6 @@
 package com.cljtech.clinica.service;
 
+import com.cljtech.clinica.model.enuns.StatusAgendamento;
 import com.cljtech.clinica.model.records.AgendamentoRequestResponse;
 
 import java.time.LocalDate;
@@ -12,4 +13,5 @@ public interface AgendamentoService {
     List<AgendamentoRequestResponse> listarTodos();
     AgendamentoRequestResponse atualizar(Long id, AgendamentoRequestResponse agendamentoRequestResponse);
 
+    List<AgendamentoRequestResponse> listarPorStatus(StatusAgendamento status);
 }

@@ -1,6 +1,7 @@
 package com.cljtech.clinica.data.repository;
 
 import com.cljtech.clinica.data.Agendamento;
+import com.cljtech.clinica.model.enuns.StatusAgendamento;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
@@ -13,4 +14,6 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
             LocalDateTime inicio,
             LocalDateTime fim
     );
+
+    List<Agendamento> findByStatus(StatusAgendamento status);
 }
