@@ -1,14 +1,16 @@
 package com.cljtech.clinica.data;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "evolucoes_clinicas")
 @Inheritance(strategy = InheritanceType.JOINED)
-@Data
+@Getter
+@Setter
 public class EvolucaoClinica extends EntidadeBase {
 
     @OneToOne(fetch = FetchType.LAZY)

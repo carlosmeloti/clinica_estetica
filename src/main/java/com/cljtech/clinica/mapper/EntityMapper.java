@@ -58,16 +58,16 @@ public interface EntityMapper {
     List<AgendamentoRequestResponse> toAgendamentoRequestResponse(List<Agendamento> agendamentos);
     List<Agendamento> toAgendamento(List<AgendamentoRequestResponse> requests);
 
-    List<EvolucaoClinicaRequestResponse> toEvolucaoClinicaRequestResponseList(List<EvolucaoClinica> evolucaoClinicas);
+    List<EvolucaoEsteticaRequestResponse> toEvolucaoClinicaRequestResponseList(List<EvolucaoClinica> evolucaoClinicas);
     @Mapping(source = "agendamento.id", target = "agendamentoId")
     @Mapping(source = "paciente.id", target = "pacienteId")
     @Mapping(source = "profissional.id", target = "profissionalId")
-    EvolucaoClinicaRequestResponse toEvolucaoClinicaRequestRessponse(EvolucaoClinica evolucaoClinica);
+    EvolucaoEsteticaRequestResponse toEvolucaoClinicaRequestRessponse(EvolucaoEstetica evolucaoEstetica);
 
     @Mapping(source = "agendamentoId", target = "agendamento.id")
     @Mapping(source = "pacienteId", target = "paciente.id")
     @Mapping(source = "profissionalId", target = "profissional.id")
-    EvolucaoClinica toEvolucaoClinica(EvolucaoClinicaRequestResponse request);
-    List<EvolucaoClinica> toEvolucaoClinica(List<EvolucaoClinicaRequestResponse> requests);
+    EvolucaoEstetica toEvolucaoClinica(EvolucaoEsteticaRequestResponse request);
+    List<EvolucaoClinica> toEvolucaoClinica(List<EvolucaoEsteticaRequestResponse> requests);
 
 }

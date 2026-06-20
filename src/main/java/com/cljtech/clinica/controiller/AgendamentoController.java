@@ -16,16 +16,16 @@ public interface AgendamentoController {
     @PostMapping("/criar")
     ResponseEntity<AgendamentoRequestResponse> criar(@RequestBody  AgendamentoRequestResponse agendamentoRequestResponse);
 
-    @GetMapping("/listar")
+    @GetMapping("/listar-dia-profissional")
     ResponseEntity<List<AgendamentoRequestResponse>> listarPorDiaEProfissional(
             @RequestParam Long profissionalId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data
     );
 
-    @GetMapping("/listar/status")
+    @GetMapping("/listar-por-status")
     ResponseEntity<List<AgendamentoRequestResponse>> listarPorStatus(@RequestParam StatusAgendamento status);
 
-    @GetMapping("/listar/todos")
+    @GetMapping("/listar-todos")
     ResponseEntity<List<AgendamentoRequestResponse>> listarTodos();
 
     @PatchMapping("/atualizar/{id}")
