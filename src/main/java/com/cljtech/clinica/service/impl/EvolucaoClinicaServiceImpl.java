@@ -1,12 +1,9 @@
 package com.cljtech.clinica.service.impl;
 
-import com.cljtech.clinica.data.Agendamento;
-import com.cljtech.clinica.data.EvolucaoClinica;
-import com.cljtech.clinica.data.EvolucaoEstetica;
-import com.cljtech.clinica.data.repository.AgendamentoRepository;
-import com.cljtech.clinica.data.repository.EvolucaoClinicaRepository;
-import com.cljtech.clinica.data.repository.EvolucaoEsteticaRepository;
+import com.cljtech.clinica.data.*;
+import com.cljtech.clinica.data.repository.*;
 import com.cljtech.clinica.mapper.EntityMapper;
+import com.cljtech.clinica.model.enuns.StatusAgendamento;
 import com.cljtech.clinica.model.records.EvolucaoEsteticaRequestResponse;
 import com.cljtech.clinica.service.EvolucaoEsteticaService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +20,10 @@ public class EvolucaoClinicaServiceImpl implements EvolucaoEsteticaService {
 
     private final EvolucaoEsteticaRepository evolucaoEsteticaRepository;
     private final AgendamentoRepository agendamentoRepository;
+    private final ConsumoInsumoRepository consumoInsumoRepository;
+    private final InsumosRepository insumosRepository;
     private final EntityMapper entityMapper;
+    private final LocalAplicacaoRepository localAplicacaoRepository;
 
     @Override
     public EvolucaoEsteticaRequestResponse criar(EvolucaoEsteticaRequestResponse request) {
@@ -45,8 +46,37 @@ public class EvolucaoClinicaServiceImpl implements EvolucaoEsteticaService {
         evolucao.setPesoPacienteKg(request.pesoPacienteKg());
         evolucao.setDoseAplicadaMg(request.doseAplicadaMg());
 
+        if (request.locaisIds() != null && !request.locaisIds().isEmpty()) {
+            List<LocalAplicacao> locais = localAplicacaoRepository.findAllById(request.locaisIds());
+            evolucao.setLocaisAplicados(locais);
+        }
+        EvolucaoEstetica evolucaoSalva = evolucaoEsteticaRepository.save(evolucao);
+        agendamento.setStatus(StatusAgendamento.FINALIZADO);
+        agendamentoRepository.save(agendamento);
 
-        EvolucaoEstetica evolucaoEstetica = evolucaoEsteticaRepository.save(entityMapper.toEvolucaoClinica(request));
-        return entityMapper.toEvolucaoClinicaRequestRessponse(evolucaoEstetica);
+
+        if (request.consumos() != null && !request.consumos().isEmpty()) {
+            request.consumos().forEach(consumoDto -> {
+                Insumo insumo = insumosRepository.findById(consumoDto.id())
+                        .orElseThrow(() -> new RuntimeException("Insumo id " + consumoDto.id() + " não encontrado."));
+
+                // Registra o histórico de consumo
+                ConsumoInsumo consumo = new ConsumoInsumo();
+                consumo.setEvolucao(evolucaoSalva);
+                consumo.setInsumo(insumo);
+                consumo.setQuantidadeUsada(consumoDto.quantidadeUsada());
+                consumoInsumoRepository.save(consumo);
+
+                // Deduz a quantidade do estoque do produto
+                double estoqueAtualizado = insumo.getQuantidadeEstoque() - consumoDto.quantidadeUsada();
+                if (estoqueAtualizado < 0) {
+                    // Opcional: Lançar erro ou apenas deixar o estoque negativo se a clínica permitir trabalhar assim
+                    // throw new RuntimeException("Estoque insuficiente para o insumo: " + insumo.getNome());
+                }
+                insumo.setQuantidadeEstoque(estoqueAtualizado);
+                insumosRepository.save(insumo);
+            });
+        }
+        return entityMapper.toEvolucaoClinicaRequestRessponse(evolucaoSalva);
     }
 }
