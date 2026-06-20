@@ -15,13 +15,13 @@ CREATE TABLE clinica.consumos_insumos (
                                                   REFERENCES clinica.evolucoes_clinicas (id)
                                                   ON DELETE RESTRICT,
 
-    -- Chave Estrangeira para a tabela de Insumos
+    -- Chave Estrangeira para a tabela de Insumos (CORRIGIDO PARA SINGULAR)
                                           CONSTRAINT fk_consumo_insumo
                                               FOREIGN KEY (insumo_id)
-                                                  REFERENCES clinica.insumos (id)
+                                                  REFERENCES clinica.insumo (id) -- <--- Mudado aqui de 'insumos' para 'insumo'
                                                   ON DELETE RESTRICT
 );
 
--- Índices para otimizar as buscas por relatórios de consumo (Performance na rede local)
+-- Índices para otimizar as buscas por relatórios de consumo
 CREATE INDEX idx_consumo_evolucao ON clinica.consumos_insumos(evolucao_id);
 CREATE INDEX idx_consumo_insumo ON clinica.consumos_insumos(insumo_id);
