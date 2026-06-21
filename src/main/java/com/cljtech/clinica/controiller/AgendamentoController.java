@@ -2,6 +2,7 @@ package com.cljtech.clinica.controiller;
 
 import com.cljtech.clinica.model.enuns.StatusAgendamento;
 import com.cljtech.clinica.model.records.AgendamentoRequestResponse;
+import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface AgendamentoController {
 
     @PostMapping("/criar")
-    ResponseEntity<AgendamentoRequestResponse> criar(@RequestBody  AgendamentoRequestResponse agendamentoRequestResponse);
+    ResponseEntity<AgendamentoRequestResponse> criar(@RequestBody @Valid AgendamentoRequestResponse agendamentoRequestResponse);
 
     @GetMapping("/listar-dia-profissional")
     ResponseEntity<List<AgendamentoRequestResponse>> listarPorDiaEProfissional(
