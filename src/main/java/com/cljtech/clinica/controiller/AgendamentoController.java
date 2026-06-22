@@ -1,7 +1,8 @@
 package com.cljtech.clinica.controiller;
 
 import com.cljtech.clinica.model.enuns.StatusAgendamento;
-import com.cljtech.clinica.model.records.AgendamentoRequestResponse;
+import com.cljtech.clinica.model.records.AgendamentoRequest;
+import com.cljtech.clinica.model.records.AgendamentoResponse;
 import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -15,20 +16,20 @@ import java.util.List;
 public interface AgendamentoController {
 
     @PostMapping("/criar")
-    ResponseEntity<AgendamentoRequestResponse> criar(@RequestBody @Valid AgendamentoRequestResponse agendamentoRequestResponse);
+    ResponseEntity<AgendamentoResponse> criar(@RequestBody @Valid AgendamentoRequest agendamentoRequest);
 
     @GetMapping("/listar-dia-profissional")
-    ResponseEntity<List<AgendamentoRequestResponse>> listarPorDiaEProfissional(
+    ResponseEntity<List<AgendamentoResponse>> listarPorDiaEProfissional(
             @RequestParam Long profissionalId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data
     );
 
     @GetMapping("/listar-por-status")
-    ResponseEntity<List<AgendamentoRequestResponse>> listarPorStatus(@RequestParam StatusAgendamento status);
+    ResponseEntity<List<AgendamentoResponse>> listarPorStatus(@RequestParam StatusAgendamento status);
 
     @GetMapping("/listar-todos")
-    ResponseEntity<List<AgendamentoRequestResponse>> listarTodos();
+    ResponseEntity<List<AgendamentoResponse>> listarTodos();
 
     @PatchMapping("/atualizar/{id}")
-    ResponseEntity<AgendamentoRequestResponse> atualizar(@PathVariable Long id,@RequestBody AgendamentoRequestResponse agendamentoRequestResponse);
+    ResponseEntity<AgendamentoResponse> atualizar(@PathVariable Long id, @RequestBody AgendamentoRequest agendamentoRequest);
 }

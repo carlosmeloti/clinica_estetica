@@ -6,6 +6,8 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -17,8 +19,13 @@ public class Agendamento extends EntidadeBase {
     @ManyToOne(optional = false)
     private Usuario profissional;
 
-    @ManyToOne(optional = false)
-    private Procedimento procedimento;
+    @ManyToMany
+    @JoinTable(
+            name = "agendamento_procedimento",
+            joinColumns = @JoinColumn(name = "agendamento_id"),
+            inverseJoinColumns = @JoinColumn(name = "procedimento_id")
+    )
+    private List<Procedimento> procedimentos = new ArrayList<>();
 
     @Column(nullable = false)
     private LocalDateTime dataHoraInicio;

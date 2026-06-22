@@ -1,17 +1,18 @@
 package com.cljtech.clinica.service;
 
 import com.cljtech.clinica.model.enuns.StatusAgendamento;
-import com.cljtech.clinica.model.records.AgendamentoRequestResponse;
+import com.cljtech.clinica.model.records.AgendamentoRequest;
+import com.cljtech.clinica.model.records.AgendamentoResponse;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface AgendamentoService {
 
-    AgendamentoRequestResponse criar(AgendamentoRequestResponse agendamentoRequestResponse);
-    List<AgendamentoRequestResponse> listarPorDiaEProfissional(Long profissionalId, LocalDate data);
-    List<AgendamentoRequestResponse> listarTodos();
-    AgendamentoRequestResponse atualizar(Long id, AgendamentoRequestResponse agendamentoRequestResponse);
+    AgendamentoResponse criar(AgendamentoRequest agendamentoRequest);
+    List<AgendamentoResponse> listarPorDiaEProfissional(Long profissionalId, LocalDate data);
+    List<AgendamentoResponse> listarTodos();
+    AgendamentoResponse atualizar(Long id, AgendamentoRequest agendamentoRequest);
 
-    List<AgendamentoRequestResponse> listarPorStatus(StatusAgendamento status);
+    List<AgendamentoResponse> listarPorStatus(StatusAgendamento status);
 }

@@ -2,7 +2,8 @@ package com.cljtech.clinica.controiller.impl;
 
 import com.cljtech.clinica.controiller.AgendamentoController;
 import com.cljtech.clinica.model.enuns.StatusAgendamento;
-import com.cljtech.clinica.model.records.AgendamentoRequestResponse;
+import com.cljtech.clinica.model.records.AgendamentoRequest;
+import com.cljtech.clinica.model.records.AgendamentoResponse;
 import com.cljtech.clinica.service.AgendamentoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,13 @@ public class AgendamentoControllerImpl implements AgendamentoController {
 
     private final AgendamentoService agendamentoService;
     @Override
-    public ResponseEntity<AgendamentoRequestResponse> criar(AgendamentoRequestResponse agendamentoRequestResponse) {
-        return ResponseEntity.ok(agendamentoService.criar(agendamentoRequestResponse));
+    public ResponseEntity<AgendamentoResponse> criar(AgendamentoRequest agendamentoRequest) {
+        return ResponseEntity.ok(agendamentoService.criar(agendamentoRequest));
     }
 
     @Override
-    public ResponseEntity<List<AgendamentoRequestResponse>> listarPorDiaEProfissional(Long profissionalId, LocalDate data) {
-        List<AgendamentoRequestResponse> agendamentos = agendamentoService.listarPorDiaEProfissional(profissionalId, data);
+    public ResponseEntity<List<AgendamentoResponse>> listarPorDiaEProfissional(Long profissionalId, LocalDate data) {
+        List<AgendamentoResponse> agendamentos = agendamentoService.listarPorDiaEProfissional(profissionalId, data);
 
         if (agendamentos.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -33,9 +34,9 @@ public class AgendamentoControllerImpl implements AgendamentoController {
     }
 
     @Override
-    public ResponseEntity<List<AgendamentoRequestResponse>> listarPorStatus(StatusAgendamento status) {
+    public ResponseEntity<List<AgendamentoResponse>> listarPorStatus(StatusAgendamento status) {
 
-        List<AgendamentoRequestResponse> agendamentos = agendamentoService.listarPorStatus(status);
+        List<AgendamentoResponse> agendamentos = agendamentoService.listarPorStatus(status);
 
         if (agendamentos.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -45,8 +46,8 @@ public class AgendamentoControllerImpl implements AgendamentoController {
     }
 
     @Override
-    public ResponseEntity<List<AgendamentoRequestResponse>> listarTodos() {
-        List<AgendamentoRequestResponse> agendamentos = agendamentoService.listarTodos();
+    public ResponseEntity<List<AgendamentoResponse>> listarTodos() {
+        List<AgendamentoResponse> agendamentos = agendamentoService.listarTodos();
         if (agendamentos.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -54,8 +55,8 @@ public class AgendamentoControllerImpl implements AgendamentoController {
     }
 
     @Override
-    public ResponseEntity<AgendamentoRequestResponse> atualizar(Long id, AgendamentoRequestResponse agendamentoRequestResponse) {
-      AgendamentoRequestResponse agendamento = agendamentoService.atualizar(id, agendamentoRequestResponse);
+    public ResponseEntity<AgendamentoResponse> atualizar(Long id, AgendamentoRequest agendamentoRequest) {
+        AgendamentoResponse agendamento = agendamentoService.atualizar(id, agendamentoRequest);
        return ResponseEntity.ok(agendamento);
     }
 }

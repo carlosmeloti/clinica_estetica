@@ -35,28 +35,22 @@ public interface EntityMapper {
     List<PacienteRequestResponse> toPacienteRequestResponse(List<Paciente> pacientes);
     List<Paciente> toPaciente(List<PacienteRequestResponse> requests);
 
+    AgendamentoResponse toAgendamentoRequestResponse(Agendamento agendamento);
 
-    @Mapping(source = "paciente.id", target = "pacienteId")
-    @Mapping(source = "profissional.id", target = "profissionalId")
-    @Mapping(source = "procedimento.id", target = "procedimentoId")
-    AgendamentoRequestResponse toAgendamentoRequestResponse(Agendamento agendamento);
-
-    @Mapping(source = "pacienteId", target = "paciente.id")
-    @Mapping(source = "profissionalId", target = "profissional.id")
-    @Mapping(source = "procedimentoId", target = "procedimento.id")
-    Agendamento toAgendamento(AgendamentoRequestResponse request);
+    @Mapping(target = "paciente.id", ignore = true)
+    @Mapping(target = "profissional.id", ignore = true)
+    @Mapping(target = "procedimentos", ignore = true)
+    Agendamento toAgendamento(AgendamentoRequest request);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "pacienteId", target = "paciente.id")
-    @Mapping(source = "profissionalId", target = "profissional.id")
-    @Mapping(source = "procedimentoId", target = "procedimento.id")
+    @Mapping(target = "paciente.id", ignore = true)
+    @Mapping(target = "profissional.id", ignore = true)
+    @Mapping(target = "procedimentos", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateAgendamentoFromRequest(
-            AgendamentoRequestResponse request,
+            AgendamentoRequest request,
             @MappingTarget Agendamento agendamento
     );
-    List<AgendamentoRequestResponse> toAgendamentoRequestResponse(List<Agendamento> agendamentos);
-    List<Agendamento> toAgendamento(List<AgendamentoRequestResponse> requests);
 
     List<EvolucaoEsteticaRequestResponse> toEvolucaoClinicaRequestResponseList(List<EvolucaoClinica> evolucaoClinicas);
     @Mapping(source = "agendamento.id", target = "agendamentoId")
