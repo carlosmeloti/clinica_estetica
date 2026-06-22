@@ -37,15 +37,7 @@ public class AgendamentoServiceImpl implements AgendamentoService {
     @Override
     public AgendamentoResponse criar(AgendamentoRequest agendamentoRequest) {
 
-        boolean existeAgendamentoNoMesmoHorario = agendamentoRepository.existeAgendamentoNoMesmoHorario(
-                agendamentoRequest.profissionalId(),
-                agendamentoRequest.dataHoraInicio(),
-                agendamentoRequest.dataHoraFim()
-        );
-
-        if (existeAgendamentoNoMesmoHorario) {
-            throw new RuntimeException("Já existe um agendamento no mesmo horário.");
-        }
+        existeAgendamento(agendamentoRequest);
 
         Paciente paciente = pacienteRespository.findById(agendamentoRequest.pacienteId()).orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
         Usuario profissional = usuarioRepository.findById(agendamentoRequest.profissionalId()).orElseThrow(() ->  new RuntimeException("Profissional não encontrado"));
@@ -67,6 +59,18 @@ public class AgendamentoServiceImpl implements AgendamentoService {
         agendamentoRepository.save(agendamento);
 
         return entityMapper.toAgendamentoRequestResponse(agendamento);
+    }
+
+    private void existeAgendamento(AgendamentoRequest agendamentoRequest) {
+        boolean existeAgendamentoNoMesmoHorario = agendamentoRepository.existeAgendamentoNoMesmoHorario(
+                agendamentoRequest.profissionalId(),
+                agendamentoRequest.dataHoraInicio(),
+                agendamentoRequest.dataHoraFim()
+        );
+
+        if (existeAgendamentoNoMesmoHorario) {
+            throw new RuntimeException("Já existe um agendamento no mesmo horário.");
+        }
     }
 
     @Override
