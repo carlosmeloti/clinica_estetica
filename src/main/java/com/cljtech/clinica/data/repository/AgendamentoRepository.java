@@ -22,10 +22,12 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
     @Query("SELECT COUNT(a) > 0 FROM Agendamento a " +
             "WHERE a.profissional.id = :profissionalId " +
             "AND a.dataHoraInicio < :fim " +
-            "AND a.dataHoraFim > :inicio")
+            "AND a.dataHoraFim > :inicio " +
+            "AND a.status != :statusCancelado")
     boolean existeAgendamentoNoMesmoHorario(
             @Param("profissionalId") Long profissionalId,
             @Param("inicio") LocalDateTime inicio,
-            @Param("fim") LocalDateTime fim
+            @Param("fim") LocalDateTime fim,
+            @Param("statusCancelado") StatusAgendamento statusCancelado
     );
 }

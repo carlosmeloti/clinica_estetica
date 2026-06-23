@@ -65,7 +65,8 @@ public class AgendamentoServiceImpl implements AgendamentoService {
         boolean existeAgendamentoNoMesmoHorario = agendamentoRepository.existeAgendamentoNoMesmoHorario(
                 agendamentoRequest.profissionalId(),
                 agendamentoRequest.dataHoraInicio(),
-                agendamentoRequest.dataHoraFim()
+                agendamentoRequest.dataHoraFim(),
+                StatusAgendamento.CANCELADO
         );
 
         if (existeAgendamentoNoMesmoHorario) {
