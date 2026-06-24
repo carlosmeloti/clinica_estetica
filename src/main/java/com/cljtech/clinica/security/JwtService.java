@@ -1,5 +1,8 @@
 package com.cljtech.clinica.security;
 
+import com.cljtech.clinica.data.Usuario;
+import com.cljtech.clinica.model.enuns.PerfilUsuario;
+import com.cljtech.clinica.model.records.TokenResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -18,13 +21,19 @@ public class JwtService {
     @Value("${api.security.token.secret}")
     private String secretKey;
 
-    public String generateToken(UserDetails userDetails) {
-        return Jwts.builder()
+    public TokenResponse generateToken(UserDetails userDetails) {
+
+        Usuario usuario = (Usuario) userDetails;
+        PerfilUsuario perfil =usuario.getPerfil();
+
+        String token = Jwts.builder()
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hora
                 .signWith(getSignInKey())
                 .compact();
+
+        return new TokenResponse(token, usuario.getNome(),perfil);
     }
 
     private SecretKey getSignInKey() {

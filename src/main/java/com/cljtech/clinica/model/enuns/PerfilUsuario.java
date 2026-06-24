@@ -16,4 +16,8 @@ public enum PerfilUsuario {
     public String getDescricao() {
         return descricao;
     }
+
+    public String getCodigo() {
+        return name();
+    }
 }
