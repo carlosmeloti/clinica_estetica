@@ -17,6 +17,9 @@ public interface PacienteController {
     @GetMapping("/buscar/{id}")
     ResponseEntity<PacienteRequestResponse> buscar(@PathVariable Long id);
 
+    @GetMapping("/criterios")
+    ResponseEntity<Page<PacienteRequestResponse>> buscarPorCriterios(@RequestParam String nome, String cpf, String email, Pageable pageable);
+
     @GetMapping("/listar")
     ResponseEntity<Page<PacienteRequestResponse>> listar(Pageable pageable);
 

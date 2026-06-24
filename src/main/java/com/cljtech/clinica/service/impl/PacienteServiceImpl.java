@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -28,6 +30,15 @@ public class PacienteServiceImpl implements PacienteService {
     public PacienteRequestResponse buscar(Long id) {
         return entityMapper.toPacienteRequestResponse(
                 pacienteRespository.findById(id).orElseThrow(() -> new RuntimeException("Paciente não encontrado.")));
+    }
+
+    @Override
+    public Page<PacienteRequestResponse> buscarPorCriterios(String nome, String cpf, String email, Pageable pageable) {
+        if (nome != null || cpf != null || email != null) {
+            return pacienteRespository.findByNomeOrCpfOrEmail(nome, cpf, email, pageable)
+                    .map(entityMapper::toPacienteRequestResponse);
+        }
+        return Page.empty();
     }
 
     @Override

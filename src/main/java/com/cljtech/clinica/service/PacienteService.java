@@ -14,6 +14,8 @@ public interface PacienteService {
 
     PacienteRequestResponse buscar(Long id);
 
+    Page<PacienteRequestResponse> buscarPorCriterios(String nome, String cpf, String email, Pageable pageable);
+
     Page<PacienteRequestResponse> listar(Pageable pageable);
 
     void atualizar(PacienteRequestResponse pacienteRequestResponse);

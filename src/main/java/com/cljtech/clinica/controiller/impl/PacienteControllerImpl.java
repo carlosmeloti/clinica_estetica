@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class PacienteControllerImpl implements PacienteController {
@@ -25,6 +27,15 @@ public class PacienteControllerImpl implements PacienteController {
     @Override
     public ResponseEntity<PacienteRequestResponse> buscar(Long id) {
         return null;
+    }
+
+    @Override
+    public ResponseEntity<Page<PacienteRequestResponse>> buscarPorCriterios(String nome, String cpf, String email, Pageable pageable) {
+       Page<PacienteRequestResponse> pacientes = pacienteService.buscarPorCriterios(nome, cpf, email, pageable);
+       if (pacientes.isEmpty()) {
+           return ResponseEntity.noContent().build();
+       }
+       return ResponseEntity.ok(pacientes);
     }
 
     @Override
