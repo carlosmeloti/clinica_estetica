@@ -11,7 +11,6 @@ import com.cljtech.clinica.data.repository.UsuarioRepository;
 import com.cljtech.clinica.exception.ConflitoException;
 import com.cljtech.clinica.exception.RegraNegocioException;
 import com.cljtech.clinica.mapper.EntityMapper;
-import com.cljtech.clinica.model.enuns.StatusAgendamento;
 import com.cljtech.clinica.model.records.AgendamentoRequest;
 import com.cljtech.clinica.model.records.AgendamentoResponse;
 import com.cljtech.clinica.model.records.ProcedimentoRequestResponse;
@@ -24,7 +23,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 

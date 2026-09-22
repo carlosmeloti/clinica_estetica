@@ -21,6 +21,7 @@ public interface AgendamentoService {
     AgendamentoResponse cancelar(Long id);
     AgendamentoResponse concluir(Long id);
     AgendamentoResponse naoCompareceu(Long id);
+    AgendamentoResponse mudarStatus(Long id, StatusAgendamento novoStatus);
 
     List<AgendamentoResponse> listarPorStatus(StatusAgendamento status);
 }

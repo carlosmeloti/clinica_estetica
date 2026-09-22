@@ -165,9 +165,19 @@ public class AgendamentoServiceImpl implements AgendamentoService {
         return mudarStatus(id, StatusAgendamento.NAO_COMPARECEU);
     }
 
-    private AgendamentoResponse mudarStatus(Long id, StatusAgendamento novoStatus) {
+    @Override
+    public AgendamentoResponse mudarStatus(Long id, StatusAgendamento novoStatus) {
         Agendamento agendamento = agendamentoRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Agendamento não encontrado"));
+        
+        if (novoStatus == StatusAgendamento.EM_ATENDIMENTO) {
+            if (agendamento.getStatus() == StatusAgendamento.CANCELADO || 
+                agendamento.getStatus() == StatusAgendamento.CONCLUIDO ||
+                agendamento.getStatus() == StatusAgendamento.NAO_COMPARECEU) {
+                throw new RegraNegocioException("Não é possível iniciar atendimento para agendamento " + agendamento.getStatus());
+            }
+        }
+
         agendamento.setStatus(novoStatus);
         return entityMapper.toAgendamentoRequestResponse(agendamentoRepository.save(agendamento));
     }

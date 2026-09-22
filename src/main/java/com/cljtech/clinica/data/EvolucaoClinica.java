@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "evolucoes_clinicas")
@@ -29,8 +30,32 @@ public class EvolucaoClinica extends EntidadeBase {
     private LocalDateTime dataRegistro;
 
     @Lob
-    @Column(name = "relato_clinico", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "relato_clinico", columnDefinition = "TEXT")
     private String relatoClinico;
+
+    @Column(name = "notas_profissional", columnDefinition = "TEXT")
+    private String notasProfissional;
+
+    @Column(columnDefinition = "TEXT")
+    private String observacoes;
+
+    @Column(columnDefinition = "TEXT")
+    private String orientacoesAoPaciente;
+
+    @Column(columnDefinition = "TEXT")
+    private String intercorrencias;
+
+    private String retornoRecomendado;
+
+    private Boolean finalizado = false;
+
+    @ManyToMany
+    @JoinTable(
+            name = "evolucao_procedimentos",
+            joinColumns = @JoinColumn(name = "evolucao_id"),
+            inverseJoinColumns = @JoinColumn(name = "procedimento_id")
+    )
+    private List<Procedimento> procedimentosRealizados;
 
     @Column(name = "diagnostico_hipotetico")
     private String diagnosticoHipotetico;

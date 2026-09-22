@@ -55,8 +55,27 @@ public interface EntityMapper {
     List<EvolucaoEsteticaRequestResponse> toEvolucaoClinicaRequestResponseList(List<EvolucaoClinica> evolucaoClinicas);
     @Mapping(source = "agendamento.id", target = "agendamentoId")
     @Mapping(source = "paciente.id", target = "pacienteId")
+    @Mapping(source = "paciente.nome", target = "pacienteNome")
     @Mapping(source = "profissional.id", target = "profissionalId")
-    EvolucaoEsteticaRequestResponse toEvolucaoClinicaRequestRessponse(EvolucaoEstetica evolucaoEstetica);
+    @Mapping(source = "profissional.nome", target = "profissionalNome")
+    @Mapping(source = "dataRegistro", target = "dataAtendimento")
+    @Mapping(source = "agendamento.status", target = "statusAgendamento")
+    @Mapping(source = "procedimentosRealizados", target = "procedimentos")
+    @Mapping(source = "locaisAplicados", target = "locaisAplicados")
+    @Mapping(target = "consumos", ignore = true)
+    AtendimentoResponse toAtendimentoResponse(EvolucaoEstetica evolucaoEstetica);
+
+    @Mapping(source = "agendamento.id", target = "agendamentoId")
+    @Mapping(source = "paciente.id", target = "pacienteId")
+    @Mapping(source = "paciente.nome", target = "pacienteNome")
+    @Mapping(source = "profissional.id", target = "profissionalId")
+    @Mapping(source = "profissional.nome", target = "profissionalNome")
+    @Mapping(source = "dataRegistro", target = "dataAtendimento")
+    @Mapping(source = "agendamento.status", target = "statusAgendamento")
+    @Mapping(source = "procedimentosRealizados", target = "procedimentos")
+    @Mapping(target = "locaisAplicados", ignore = true)
+    @Mapping(target = "consumos", ignore = true)
+    AtendimentoResponse toAtendimentoResponse(EvolucaoClinica evolucaoClinica);
 
     @Mapping(source = "agendamentoId", target = "agendamento.id")
     @Mapping(source = "pacienteId", target = "paciente.id")
