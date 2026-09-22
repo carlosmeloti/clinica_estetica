@@ -5,7 +5,7 @@ import com.cljtech.clinica.data.Paciente;
 import com.cljtech.clinica.data.Procedimento;
 import com.cljtech.clinica.data.Usuario;
 import com.cljtech.clinica.data.repository.AgendamentoRepository;
-import com.cljtech.clinica.data.repository.PacienteRespository;
+import com.cljtech.clinica.data.repository.PacienteRepository;
 import com.cljtech.clinica.data.repository.ProcedimentoRepository;
 import com.cljtech.clinica.data.repository.UsuarioRepository;
 import com.cljtech.clinica.mapper.EntityMapper;
@@ -23,54 +23,74 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.cljtech.clinica.exception.ConflitoException;
+import com.cljtech.clinica.exception.RecursoNaoEncontradoException;
+import com.cljtech.clinica.exception.RegraNegocioException;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class AgendamentoServiceImpl implements AgendamentoService {
 
     private final AgendamentoRepository agendamentoRepository;
-    private final PacienteRespository pacienteRespository;
+    private final PacienteRepository pacienteRespository;
     private final UsuarioRepository usuarioRepository;
     private final ProcedimentoRepository procedimentoRepository;
     private final EntityMapper entityMapper;
 
     @Override
     public AgendamentoResponse criar(AgendamentoRequest agendamentoRequest) {
+        validarAgendamento(agendamentoRequest, null);
 
-        existeAgendamento(agendamentoRequest);
-
-        Paciente paciente = pacienteRespository.findById(agendamentoRequest.pacienteId()).orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
-        Usuario profissional = usuarioRepository.findById(agendamentoRequest.profissionalId()).orElseThrow(() ->  new RuntimeException("Profissional não encontrado"));
-        List<Procedimento> procedimentos = procedimentoRepository.findAllByIdIn(agendamentoRequest.procedimentos()
-                .stream()
-                .map(ProcedimentoRequestResponse::id)
-                .collect(Collectors
-                        .toList()));
-
-        if (procedimentos.size() != agendamentoRequest.procedimentos().size()) {
-            throw new RuntimeException("Um ou mais procedimentos informados não foram encontrados.");
-        }
+        Paciente paciente = pacienteRespository.findById(agendamentoRequest.pacienteId())
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Paciente não encontrado"));
+        Usuario profissional = usuarioRepository.findById(agendamentoRequest.profissionalId())
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Profissional não encontrado"));
+        
+        List<Procedimento> procedimentos = buscarProcedimentos(agendamentoRequest.procedimentos());
 
         Agendamento agendamento = entityMapper.toAgendamento(agendamentoRequest);
         agendamento.setPaciente(paciente);
         agendamento.setProfissional(profissional);
         agendamento.setProcedimentos(procedimentos);
+        agendamento.setStatus(StatusAgendamento.AGENDADO);
 
-        agendamentoRepository.save(agendamento);
-
-        return entityMapper.toAgendamentoRequestResponse(agendamento);
+        return entityMapper.toAgendamentoRequestResponse(agendamentoRepository.save(agendamento));
     }
 
-    private void existeAgendamento(AgendamentoRequest agendamentoRequest) {
-        boolean existeAgendamentoNoMesmoHorario = agendamentoRepository.existeAgendamentoNoMesmoHorario(
-                agendamentoRequest.profissionalId(),
-                agendamentoRequest.dataHoraInicio(),
-                agendamentoRequest.dataHoraFim(),
-                StatusAgendamento.CANCELADO
+    private List<Procedimento> buscarProcedimentos(List<ProcedimentoRequestResponse> requests) {
+        if (requests == null || requests.isEmpty()) {
+            throw new RegraNegocioException("A lista de procedimentos não pode estar vazia.");
+        }
+        List<Long> ids = requests.stream().map(ProcedimentoRequestResponse::id).toList();
+        List<Procedimento> procedimentos = procedimentoRepository.findAllByIdIn(ids);
+        if (procedimentos.size() != ids.size()) {
+            throw new RecursoNaoEncontradoException("Um ou mais procedimentos informados não foram encontrados.");
+        }
+        return procedimentos;
+    }
+
+    private void validarAgendamento(AgendamentoRequest request, Long idParaIgnorar) {
+        if (request.dataHoraInicio() == null || request.dataHoraFim() == null) {
+            throw new RegraNegocioException("Data/hora de início e fim são obrigatórias.");
+        }
+        if (request.dataHoraInicio().isAfter(request.dataHoraFim())) {
+            throw new RegraNegocioException("A data de início deve ser anterior à data de fim.");
+        }
+        
+        boolean conflito = agendamentoRepository.existeAgendamentoNoMesmoHorario(
+                request.profissionalId(),
+                request.dataHoraInicio(),
+                request.dataHoraFim(),
+                StatusAgendamento.CANCELADO,
+                idParaIgnorar
         );
 
-        if (existeAgendamentoNoMesmoHorario) {
-            throw new RuntimeException("Já existe um agendamento no mesmo horário.");
+        if (conflito) {
+            throw new ConflitoException("Já existe um agendamento para este profissional no horário selecionado.");
         }
     }
 
@@ -89,23 +109,67 @@ public class AgendamentoServiceImpl implements AgendamentoService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<AgendamentoResponse> listarTodos() {
-        return agendamentoRepository.findAll()
-                .stream()
-                .map(entityMapper::toAgendamentoRequestResponse)
-                .toList();
+    public Page<AgendamentoResponse> listarTodos(Pageable pageable) {
+        return agendamentoRepository.findAll(pageable)
+                .map(entityMapper::toAgendamentoRequestResponse);
     }
 
     @Override
-    public AgendamentoResponse atualizar(Long id, AgendamentoRequest agendamentoRequest) {
+    public AgendamentoResponse atualizar(Long id, AgendamentoRequest request) {
         Agendamento agendamento = agendamentoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Agendamento não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Agendamento não encontrado"));
 
-        entityMapper.updateAgendamentoFromRequest(agendamentoRequest, agendamento);
+        if (agendamento.getStatus() == StatusAgendamento.CANCELADO || agendamento.getStatus() == StatusAgendamento.CONCLUIDO) {
+            throw new RegraNegocioException("Não é possível alterar um agendamento cancelado ou concluído.");
+        }
 
-        Agendamento salvo = agendamentoRepository.save(agendamento);
+        validarAgendamento(request, id);
 
-        return entityMapper.toAgendamentoRequestResponse(salvo);
+        if (request.pacienteId() != null && !request.pacienteId().equals(agendamento.getPaciente().getId())) {
+            Paciente paciente = pacienteRespository.findById(request.pacienteId())
+                    .orElseThrow(() -> new RecursoNaoEncontradoException("Paciente não encontrado"));
+            agendamento.setPaciente(paciente);
+        }
+
+        if (request.profissionalId() != null && !request.profissionalId().equals(agendamento.getProfissional().getId())) {
+            Usuario profissional = usuarioRepository.findById(request.profissionalId())
+                    .orElseThrow(() -> new RecursoNaoEncontradoException("Profissional não encontrado"));
+            agendamento.setProfissional(profissional);
+        }
+
+        if (request.procedimentos() != null) {
+            agendamento.setProcedimentos(buscarProcedimentos(request.procedimentos()));
+        }
+
+        entityMapper.updateAgendamentoFromRequest(request, agendamento);
+        return entityMapper.toAgendamentoRequestResponse(agendamentoRepository.save(agendamento));
+    }
+
+    @Override
+    public AgendamentoResponse confirmar(Long id) {
+        return mudarStatus(id, StatusAgendamento.CONFIRMADO);
+    }
+
+    @Override
+    public AgendamentoResponse cancelar(Long id) {
+        return mudarStatus(id, StatusAgendamento.CANCELADO);
+    }
+
+    @Override
+    public AgendamentoResponse concluir(Long id) {
+        return mudarStatus(id, StatusAgendamento.CONCLUIDO);
+    }
+
+    @Override
+    public AgendamentoResponse naoCompareceu(Long id) {
+        return mudarStatus(id, StatusAgendamento.NAO_COMPARECEU);
+    }
+
+    private AgendamentoResponse mudarStatus(Long id, StatusAgendamento novoStatus) {
+        Agendamento agendamento = agendamentoRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Agendamento não encontrado"));
+        agendamento.setStatus(novoStatus);
+        return entityMapper.toAgendamentoRequestResponse(agendamentoRepository.save(agendamento));
     }
 
     @Override

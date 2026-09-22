@@ -1,6 +1,6 @@
-package com.cljtech.clinica.controiller.impl;
+package com.cljtech.clinica.controller.impl;
 
-import com.cljtech.clinica.controiller.UsuarioController;
+import com.cljtech.clinica.controller.UsuarioController;
 import com.cljtech.clinica.mapper.EntityMapper;
 import com.cljtech.clinica.model.records.UsuarioRequest;
 import com.cljtech.clinica.model.records.UsuarioResponse;

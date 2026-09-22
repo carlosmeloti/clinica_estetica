@@ -1,11 +1,13 @@
-package com.cljtech.clinica.controiller.impl;
+package com.cljtech.clinica.controller.impl;
 
-import com.cljtech.clinica.controiller.AgendamentoController;
+import com.cljtech.clinica.controller.AgendamentoController;
 import com.cljtech.clinica.model.enuns.StatusAgendamento;
 import com.cljtech.clinica.model.records.AgendamentoRequest;
 import com.cljtech.clinica.model.records.AgendamentoResponse;
 import com.cljtech.clinica.service.AgendamentoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,17 +48,33 @@ public class AgendamentoControllerImpl implements AgendamentoController {
     }
 
     @Override
-    public ResponseEntity<List<AgendamentoResponse>> listarTodos() {
-        List<AgendamentoResponse> agendamentos = agendamentoService.listarTodos();
-        if (agendamentos.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(agendamentos);
+    public ResponseEntity<Page<AgendamentoResponse>> listarTodos(Pageable pageable) {
+        return ResponseEntity.ok(agendamentoService.listarTodos(pageable));
     }
 
     @Override
     public ResponseEntity<AgendamentoResponse> atualizar(Long id, AgendamentoRequest agendamentoRequest) {
         AgendamentoResponse agendamento = agendamentoService.atualizar(id, agendamentoRequest);
        return ResponseEntity.ok(agendamento);
+    }
+
+    @Override
+    public ResponseEntity<AgendamentoResponse> confirmar(Long id) {
+        return ResponseEntity.ok(agendamentoService.confirmar(id));
+    }
+
+    @Override
+    public ResponseEntity<AgendamentoResponse> cancelar(Long id) {
+        return ResponseEntity.ok(agendamentoService.cancelar(id));
+    }
+
+    @Override
+    public ResponseEntity<AgendamentoResponse> concluir(Long id) {
+        return ResponseEntity.ok(agendamentoService.concluir(id));
+    }
+
+    @Override
+    public ResponseEntity<AgendamentoResponse> naoCompareceu(Long id) {
+        return ResponseEntity.ok(agendamentoService.naoCompareceu(id));
     }
 }

@@ -3,7 +3,7 @@ package com.cljtech.clinica.model.enuns;
 public enum PerfilUsuario {
 
     ADMIN("Administrador"),
-    MEDICO("Profissional de Saúde"),
+    PROFISSIONAL("Profissional"),
     RECEPCAO("Recepcionista"),
     FINANCEIRO("Gestor Financeiro");
 

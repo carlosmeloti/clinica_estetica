@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface PacienteService {
 
-    void salvar(PacienteRequestResponse pacienteRequestResponse);
+    PacienteRequestResponse salvar(PacienteRequestResponse pacienteRequestResponse);
 
     PacienteRequestResponse buscar(Long id);
 
@@ -18,7 +18,7 @@ public interface PacienteService {
 
     Page<PacienteRequestResponse> listar(Pageable pageable);
 
-    void atualizar(PacienteRequestResponse pacienteRequestResponse);
+    PacienteRequestResponse atualizar(Long id, PacienteRequestResponse pacienteRequestResponse);
 
     void deletar(Long id);
 }

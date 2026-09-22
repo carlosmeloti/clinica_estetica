@@ -51,7 +51,7 @@ public class EvolucaoClinicaServiceImpl implements EvolucaoEsteticaService {
             evolucao.setLocaisAplicados(locais);
         }
         EvolucaoEstetica evolucaoSalva = evolucaoEsteticaRepository.save(evolucao);
-        agendamento.setStatus(StatusAgendamento.FINALIZADO);
+        agendamento.setStatus(StatusAgendamento.CONCLUIDO);
         agendamentoRepository.save(agendamento);
 
 

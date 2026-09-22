@@ -1,11 +1,12 @@
 package com.cljtech.clinica.model.enuns;
 
 public enum StatusAgendamento {
-    PENDENTE("#FFA500"),   // Laranja
-    CONFIRMADO("#28A745"), // Verde
-    CANCELADO("#DC3545"),  // Vermelho
-    FINALIZADO("#007BFF"), // Azul
-    AUSENTE("#6C757D");    // Cinza
+    AGENDADO("#FFA500"),      // Laranja (antigo PENDENTE)
+    CONFIRMADO("#28A745"),    // Verde
+    EM_ATENDIMENTO("#17A2B8"), // Ciano
+    CONCLUIDO("#007BFF"),     // Azul (antigo FINALIZADO)
+    CANCELADO("#DC3545"),     // Vermelho
+    NAO_COMPARECEU("#6C757D"); // Cinza (antigo AUSENTE)
 
     private final String corHex;
 

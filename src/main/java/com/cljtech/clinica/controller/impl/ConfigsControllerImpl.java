@@ -1,6 +1,6 @@
-package com.cljtech.clinica.controiller.impl;
+package com.cljtech.clinica.controller.impl;
 
-import com.cljtech.clinica.controiller.ConfigsController;
+import com.cljtech.clinica.controller.ConfigsController;
 import com.cljtech.clinica.model.records.InsumoRequestResponse;
 import com.cljtech.clinica.model.records.LocalAplicacaoRequestResponse;
 import com.cljtech.clinica.model.records.ProcedimentoRequestResponse;

@@ -1,4 +1,4 @@
-package com.cljtech.clinica.controiller;
+package com.cljtech.clinica.controller;
 
 import com.cljtech.clinica.model.records.LoginRequest;
 import com.cljtech.clinica.model.records.TokenResponse;

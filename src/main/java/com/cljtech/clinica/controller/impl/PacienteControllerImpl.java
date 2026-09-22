@@ -1,6 +1,6 @@
-package com.cljtech.clinica.controiller.impl;
+package com.cljtech.clinica.controller.impl;
 
-import com.cljtech.clinica.controiller.PacienteController;
+import com.cljtech.clinica.controller.PacienteController;
 import com.cljtech.clinica.model.records.PacienteRequestResponse;
 import com.cljtech.clinica.service.PacienteService;
 import lombok.RequiredArgsConstructor;
@@ -19,41 +19,34 @@ public class PacienteControllerImpl implements PacienteController {
     public final PacienteService pacienteService;
 
     @Override
-    public ResponseEntity<Void> criar(PacienteRequestResponse paciente) {
-        pacienteService.salvar(paciente);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<PacienteRequestResponse> criar(PacienteRequestResponse paciente) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(pacienteService.salvar(paciente));
     }
 
     @Override
     public ResponseEntity<PacienteRequestResponse> buscar(Long id) {
-        return null;
+        return ResponseEntity.ok(pacienteService.buscar(id));
     }
 
     @Override
     public ResponseEntity<Page<PacienteRequestResponse>> buscarPorCriterios(String nome, String cpf, String email, Pageable pageable) {
        Page<PacienteRequestResponse> pacientes = pacienteService.buscarPorCriterios(nome, cpf, email, pageable);
-       if (pacientes.isEmpty()) {
-           return ResponseEntity.noContent().build();
-       }
        return ResponseEntity.ok(pacientes);
     }
 
     @Override
     public ResponseEntity<Page<PacienteRequestResponse>> listar(Pageable pageable) {
-        Page<PacienteRequestResponse> pacientes = pacienteService.listar(pageable);
-        if (pacientes.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(pacientes);
+        return ResponseEntity.ok(pacienteService.listar(pageable));
     }
 
     @Override
-    public ResponseEntity<Void> atualizar(PacienteRequestResponse paciente) {
-        return null;
+    public ResponseEntity<PacienteRequestResponse> atualizar(Long id, PacienteRequestResponse paciente) {
+        return ResponseEntity.ok(pacienteService.atualizar(id, paciente));
     }
 
     @Override
     public ResponseEntity<Void> deletar(Long id) {
-        return null;
+        pacienteService.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }

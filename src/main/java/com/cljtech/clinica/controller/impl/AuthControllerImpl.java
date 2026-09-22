@@ -1,6 +1,6 @@
-package com.cljtech.clinica.controiller.impl;
+package com.cljtech.clinica.controller.impl;
 
-import com.cljtech.clinica.controiller.AuthController;
+import com.cljtech.clinica.controller.AuthController;
 import com.cljtech.clinica.model.records.LoginRequest;
 import com.cljtech.clinica.model.records.TokenResponse;
 import com.cljtech.clinica.service.AuthService;

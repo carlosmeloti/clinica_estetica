@@ -1,6 +1,6 @@
-package com.cljtech.clinica.controiller.impl;
+package com.cljtech.clinica.controller.impl;
 
-import com.cljtech.clinica.controiller.EvolucaoEsteticaController;
+import com.cljtech.clinica.controller.EvolucaoEsteticaController;
 import com.cljtech.clinica.model.records.EvolucaoEsteticaRequestResponse;
 import com.cljtech.clinica.service.EvolucaoEsteticaService;
 import lombok.RequiredArgsConstructor;

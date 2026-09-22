@@ -1,4 +1,4 @@
-package com.cljtech.clinica.controiller;
+package com.cljtech.clinica.controller;
 
 import com.cljtech.clinica.model.records.InsumoRequestResponse;
 import com.cljtech.clinica.model.records.LocalAplicacaoRequestResponse;

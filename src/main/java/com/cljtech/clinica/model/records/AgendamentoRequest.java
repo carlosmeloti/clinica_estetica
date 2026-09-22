@@ -8,17 +8,19 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.validation.constraints.NotEmpty;
+
 public record AgendamentoRequest(Long id,
-                                 @NotNull(message = "O paciente é obrigatório.")
+                                 @NotNull(message = "{agendamento.paciente.obrigatorio}")
                                  Long pacienteId,
-                                 @NotNull(message = "O profissional é obrigatório.")
+                                 @NotNull(message = "{agendamento.profissional.obrigatorio}")
                                  Long profissionalId,
-                                 @NotNull(message = "O procedimento é obrigatório.")
+                                 @NotEmpty(message = "{agendamento.procedimentos.obrigatorios}")
                                  List<ProcedimentoRequestResponse> procedimentos,
-                                 @NotNull(message = "A data e hora de início é obrigatória.")
-                                 @FutureOrPresent(message = "A data e hora de início não pode estar no passado.")
+                                 @NotNull(message = "{agendamento.dataHoraInicio.obrigatoria}")
+                                 @FutureOrPresent(message = "{agendamento.dataHoraInicio.futuro}")
                                  LocalDateTime dataHoraInicio,
-                                 @NotNull(message = "A data e hora de fim é obrigatória.")
+                                 @NotNull(message = "{agendamento.dataHoraFim.obrigatoria}")
                                  LocalDateTime dataHoraFim,
                                  StatusAgendamento status,
                                  String motivoConsulta,

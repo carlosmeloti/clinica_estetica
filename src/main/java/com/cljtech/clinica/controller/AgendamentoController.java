@@ -1,9 +1,11 @@
-package com.cljtech.clinica.controiller;
+package com.cljtech.clinica.controller;
 
 import com.cljtech.clinica.model.enuns.StatusAgendamento;
 import com.cljtech.clinica.model.records.AgendamentoRequest;
 import com.cljtech.clinica.model.records.AgendamentoResponse;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +30,20 @@ public interface AgendamentoController {
     ResponseEntity<List<AgendamentoResponse>> listarPorStatus(@RequestParam StatusAgendamento status);
 
     @GetMapping("/listar-todos")
-    ResponseEntity<List<AgendamentoResponse>> listarTodos();
+    ResponseEntity<Page<AgendamentoResponse>> listarTodos(Pageable pageable);
 
     @PatchMapping("/atualizar/{id}")
-    ResponseEntity<AgendamentoResponse> atualizar(@PathVariable Long id, @RequestBody AgendamentoRequest agendamentoRequest);
+    ResponseEntity<AgendamentoResponse> atualizar(@PathVariable Long id, @RequestBody @Valid AgendamentoRequest agendamentoRequest);
+
+    @PatchMapping("/{id}/confirmar")
+    ResponseEntity<AgendamentoResponse> confirmar(@PathVariable Long id);
+
+    @PatchMapping("/{id}/cancelar")
+    ResponseEntity<AgendamentoResponse> cancelar(@PathVariable Long id);
+
+    @PatchMapping("/{id}/concluir")
+    ResponseEntity<AgendamentoResponse> concluir(@PathVariable Long id);
+
+    @PatchMapping("/{id}/nao-compareceu")
+    ResponseEntity<AgendamentoResponse> naoCompareceu(@PathVariable Long id);
 }
