@@ -32,6 +32,7 @@ public interface EntityMapper {
 
     Paciente toPaciente(PacienteRequestResponse request);
     PacienteRequestResponse toPacienteRequestResponse(Paciente paciente);
+    PacienteResumoResponse toPacienteResumoResponse(Paciente paciente);
     List<PacienteRequestResponse> toPacienteRequestResponse(List<Paciente> pacientes);
     List<Paciente> toPaciente(List<PacienteRequestResponse> requests);
 

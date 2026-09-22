@@ -3,6 +3,7 @@ package com.cljtech.clinica.service.impl;
 import com.cljtech.clinica.data.repository.PacienteRepository;
 import com.cljtech.clinica.mapper.EntityMapper;
 import com.cljtech.clinica.model.records.PacienteRequestResponse;
+import com.cljtech.clinica.model.records.PacienteResumoResponse;
 import com.cljtech.clinica.service.PacienteService;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,12 @@ public class PacienteServiceImpl implements PacienteService {
         }
         return pacienteRespository.findByCriterios(nome, cpf, email, pageable)
                 .map(entityMapper::toPacienteRequestResponse);
+    }
+
+    @Override
+    public Page<PacienteResumoResponse> buscarResumoPorCriterios(String nome, String cpf, String email, Pageable pageable) {
+        return pacienteRespository.findByCriterios(nome, cpf, email, pageable)
+                .map(entityMapper::toPacienteResumoResponse);
     }
 
     @Override
