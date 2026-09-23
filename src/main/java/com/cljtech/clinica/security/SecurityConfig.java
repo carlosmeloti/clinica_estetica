@@ -32,7 +32,6 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/error").permitAll()
-                        .requestMatchers("/usuarios/criar").permitAll()
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers(
                                 "/v3/api-docs/**",

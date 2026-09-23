@@ -1,23 +1,36 @@
 package com.cljtech.clinica.controller;
 
 
+import com.cljtech.clinica.model.enuns.PerfilUsuario;
 import com.cljtech.clinica.model.records.UsuarioRequest;
 import com.cljtech.clinica.model.records.UsuarioResponse;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
 public interface UsuarioController {
 
-    @PostMapping("/criar")
-    ResponseEntity<Void> criar(@RequestBody UsuarioRequest usuario);
+    @PostMapping
+    ResponseEntity<UsuarioResponse> criar(@RequestBody @Valid UsuarioRequest usuario);
 
-    @GetMapping("/listar")
-    ResponseEntity<List<UsuarioResponse>> listar();
+    @PutMapping("/{id}")
+    ResponseEntity<UsuarioResponse> atualizar(@PathVariable Long id, @RequestBody @Valid UsuarioRequest usuario);
 
-    @GetMapping("/{login}")
-    ResponseEntity<UsuarioResponse> buscarPorLogin(@PathVariable String login);
+    @DeleteMapping("/{id}")
+    ResponseEntity<Void> deletar(@PathVariable Long id);
+
+    @GetMapping("/{id}")
+    ResponseEntity<UsuarioResponse> buscarPorId(@PathVariable Long id);
+
+    @GetMapping
+    ResponseEntity<Page<UsuarioResponse>> buscar(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String login,
+            @RequestParam(required = false) PerfilUsuario perfil,
+            Pageable pageable);
 }

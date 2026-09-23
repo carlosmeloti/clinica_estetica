@@ -15,6 +15,7 @@ import com.cljtech.clinica.model.records.AgendamentoRequest;
 import com.cljtech.clinica.model.records.AgendamentoResponse;
 import com.cljtech.clinica.model.records.ProcedimentoRequestResponse;
 import com.cljtech.clinica.service.impl.AgendamentoServiceImpl;
+import com.cljtech.clinica.model.enuns.PerfilUsuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -65,8 +66,10 @@ class AgendamentoServiceTest {
 
     @Test
     void criarAgendamentoComSucesso() {
+        Usuario profissional = new Usuario();
+        profissional.setPerfil(PerfilUsuario.PROFISSIONAL);
         when(pacienteRepository.findById(1L)).thenReturn(Optional.of(new Paciente()));
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(new Usuario()));
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(profissional));
         when(procedimentoRepository.findAllByIdIn(any())).thenReturn(List.of(new Procedimento()));
         when(agendamentoRepository.existeAgendamentoNoMesmoHorario(any(), any(), any(), any(), any())).thenReturn(false);
         when(entityMapper.toAgendamento(request)).thenReturn(agendamento);
@@ -77,6 +80,16 @@ class AgendamentoServiceTest {
 
         assertNotNull(result);
         verify(agendamentoRepository).save(any());
+    }
+
+    @Test
+    void deveLancarExcecaoAoAgendarParaUsuarioNaoProfissional() {
+        Usuario admin = new Usuario();
+        admin.setPerfil(PerfilUsuario.ADMIN);
+        when(pacienteRepository.findById(1L)).thenReturn(Optional.of(new Paciente()));
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+
+        assertThrows(RegraNegocioException.class, () -> agendamentoService.criar(request));
     }
 
     @Test

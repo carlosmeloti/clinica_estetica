@@ -9,6 +9,7 @@ import com.cljtech.clinica.data.repository.PacienteRepository;
 import com.cljtech.clinica.data.repository.ProcedimentoRepository;
 import com.cljtech.clinica.data.repository.UsuarioRepository;
 import com.cljtech.clinica.mapper.EntityMapper;
+import com.cljtech.clinica.model.enuns.PerfilUsuario;
 import com.cljtech.clinica.model.enuns.StatusAgendamento;
 import com.cljtech.clinica.model.records.AgendamentoRequest;
 import com.cljtech.clinica.model.records.AgendamentoResponse;
@@ -49,6 +50,10 @@ public class AgendamentoServiceImpl implements AgendamentoService {
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Paciente não encontrado"));
         Usuario profissional = usuarioRepository.findById(agendamentoRequest.profissionalId())
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Profissional não encontrado"));
+
+        if (profissional.getPerfil() != PerfilUsuario.PROFISSIONAL) {
+            throw new RegraNegocioException("O usuário selecionado não tem perfil de profissional.");
+        }
         
         List<Procedimento> procedimentos = buscarProcedimentos(agendamentoRequest.procedimentos());
 
@@ -134,6 +139,11 @@ public class AgendamentoServiceImpl implements AgendamentoService {
         if (request.profissionalId() != null && !request.profissionalId().equals(agendamento.getProfissional().getId())) {
             Usuario profissional = usuarioRepository.findById(request.profissionalId())
                     .orElseThrow(() -> new RecursoNaoEncontradoException("Profissional não encontrado"));
+
+            if (profissional.getPerfil() != PerfilUsuario.PROFISSIONAL) {
+                throw new RegraNegocioException("O usuário selecionado não tem perfil de profissional.");
+            }
+
             agendamento.setProfissional(profissional);
         }
 

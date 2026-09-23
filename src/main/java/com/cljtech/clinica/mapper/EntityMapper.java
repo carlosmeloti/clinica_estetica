@@ -11,7 +11,8 @@ public interface EntityMapper {
 
     Usuario toUsuario(UsuarioRequest usuarioRequest);
     UsuarioResponse toUsuarioResponse(Usuario usuario);
-    List<UsuarioResponse> toUsuarioResponse(List<Usuario> usuarios);
+    ProfissionalResponse toProfissionalResponse(Usuario usuario);
+    List<ProfissionalResponse> toProfissionalResponse(List<Usuario> usuarios);
 
 
     LocalAplicacao toLocalAplicacao(LocalAplicacaoRequestResponse request);
