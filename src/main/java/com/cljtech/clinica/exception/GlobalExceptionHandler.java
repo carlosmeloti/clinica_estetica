@@ -3,6 +3,7 @@ package com.cljtech.clinica.exception;
 
 import com.cljtech.clinica.model.records.ErroResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -22,6 +23,7 @@ import java.util.regex.Pattern;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
+@Slf4j
 public class GlobalExceptionHandler {
 
     private static final Pattern CONSTRAINT_PATTERN = Pattern.compile("constraint \\[?\"?([^\"\\]\\s]+)\"?\\]?");
@@ -30,6 +32,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErroResponse> tratarMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        log.warn("Erro de validação nos argumentos da requisição: {}", ex.getMessage());
         String mensagem = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -50,6 +53,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErroResponse> tratarConstraintViolationException(ConstraintViolationException ex) {
+        log.warn("Erro de validação de constraint: {}", ex.getMessage());
         String mensagem = ex.getConstraintViolations()
                 .stream()
                 .map(violacao -> violacao.getMessage())
@@ -63,6 +67,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErroResponse> tratarIllegalArgumentException(IllegalArgumentException ex) {
+        log.warn("Argumento inválido: {}", ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErroResponse(ex.getMessage()));
@@ -70,12 +75,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<ErroResponse> tratarIllegalStateException(IllegalStateException ex) {
+        log.warn("Estado inválido: {}", ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErroResponse(ex.getMessage()));
     }
     @ExceptionHandler(RecursoNaoEncontradoException.class)
     public ResponseEntity<ErroResponse> tratarRecursoNaoEncontradoException(RecursoNaoEncontradoException ex) {
+        log.warn("Recurso não encontrado: {}", ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(new ErroResponse(ex.getMessage()));
@@ -83,6 +90,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RegraNegocioException.class)
     public ResponseEntity<ErroResponse> tratarRegraNegocioException(RegraNegocioException ex) {
+        log.warn("Regra de negócio violada: {}", ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErroResponse(ex.getMessage()));
@@ -90,6 +98,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConflitoException.class)
     public ResponseEntity<ErroResponse> tratarConflitoException(ConflitoException ex) {
+        log.warn("Conflito na requisição: {}", ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(new ErroResponse(ex.getMessage()));
@@ -97,6 +106,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErroResponse> tratarRuntimeException(RuntimeException ex) {
+        log.error("Erro interno inesperado", ex);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErroResponse("Ocorreu um erro interno inesperado."));
@@ -104,6 +114,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErroResponse> tratarDataIntegrityViolation(DataIntegrityViolationException ex) {
+        log.warn("Violação de integridade no banco de dados: {}", ex.getMostSpecificCause().getMessage());
 
         Locale locale = LocaleContextHolder.getLocale();
         String detalhe = ex.getMostSpecificCause().getMessage();
@@ -141,8 +152,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErroResponse> tratarAuthenticationException(AuthenticationException ex) {
+        log.warn("Falha de autenticação: {}", ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(new ErroResponse("Login ou senha inválidos"));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErroResponse> tratarException(Exception ex) {
+        log.error("Erro inesperado não tratado", ex);
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErroResponse("Ocorreu um erro interno inesperado."));
     }
 }
