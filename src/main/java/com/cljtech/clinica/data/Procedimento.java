@@ -12,7 +12,10 @@ public class Procedimento extends EntidadeBase {
 
     @Column(nullable = false, unique = true)
     private String nome;
+
+    @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal precoSugerido;
+
     private Integer duracaoMinutos;
 
 }

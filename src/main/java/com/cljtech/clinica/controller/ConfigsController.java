@@ -3,6 +3,7 @@ package com.cljtech.clinica.controller;
 import com.cljtech.clinica.model.records.InsumoRequestResponse;
 import com.cljtech.clinica.model.records.LocalAplicacaoRequestResponse;
 import com.cljtech.clinica.model.records.ProcedimentoRequestResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,13 @@ public interface ConfigsController {
     ResponseEntity <List<InsumoRequestResponse>> listarInsumos();
 
     @PostMapping("/procedimentos/criar")
-    ResponseEntity<Void> criarProcedimentos(@RequestBody ProcedimentoRequestResponse request);
+    ResponseEntity<Void> criarProcedimentos(@RequestBody @Valid ProcedimentoRequestResponse request);
+
+    @PutMapping("/procedimentos/atualizar/{id}")
+    ResponseEntity<ProcedimentoRequestResponse> atualizarProcedimento(
+            @PathVariable Long id,
+            @RequestBody @Valid ProcedimentoRequestResponse request
+    );
 
     @GetMapping("/procedimentos/listar")
     ResponseEntity <List<ProcedimentoRequestResponse>> listarProcedimentos();

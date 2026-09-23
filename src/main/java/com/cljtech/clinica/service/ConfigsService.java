@@ -17,5 +17,8 @@ public interface ConfigsService {
     List<InsumoRequestResponse> listarInsumos();
 
     void criarProcedimentos(ProcedimentoRequestResponse request);
+
+    ProcedimentoRequestResponse atualizarProcedimento(Long id, ProcedimentoRequestResponse request);
+
     List<ProcedimentoRequestResponse> listarProcedimentos();
 }

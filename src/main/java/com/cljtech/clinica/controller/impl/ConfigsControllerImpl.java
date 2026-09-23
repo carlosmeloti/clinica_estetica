@@ -5,6 +5,7 @@ import com.cljtech.clinica.model.records.InsumoRequestResponse;
 import com.cljtech.clinica.model.records.LocalAplicacaoRequestResponse;
 import com.cljtech.clinica.model.records.ProcedimentoRequestResponse;
 import com.cljtech.clinica.service.ConfigsService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,9 +42,17 @@ public class ConfigsControllerImpl implements ConfigsController {
     }
 
     @Override
-    public ResponseEntity<Void> criarProcedimentos(ProcedimentoRequestResponse request) {
+    public ResponseEntity<Void> criarProcedimentos(@Valid ProcedimentoRequestResponse request) {
         configsService.criarProcedimentos(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Override
+    public ResponseEntity<ProcedimentoRequestResponse> atualizarProcedimento(
+            Long id,
+            @Valid ProcedimentoRequestResponse request
+    ) {
+        return ResponseEntity.ok(configsService.atualizarProcedimento(id, request));
     }
 
     @Override

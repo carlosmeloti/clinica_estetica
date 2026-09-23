@@ -21,6 +21,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -71,7 +72,17 @@ public class AgendamentoServiceImpl implements AgendamentoService {
         agendamento.setProcedimentos(procedimentos);
         agendamento.setStatus(StatusAgendamento.AGENDADO);
 
+        if (agendamento.getValorPrevisto() == null) {
+            agendamento.setValorPrevisto(calcularValorPrevisto(procedimentos));
+        }
+
         return entityMapper.toAgendamentoRequestResponse(agendamentoRepository.save(agendamento));
+    }
+
+    private BigDecimal calcularValorPrevisto(List<Procedimento> procedimentos) {
+        return procedimentos.stream()
+                .map(p -> p.getPrecoSugerido() != null ? p.getPrecoSugerido() : BigDecimal.ZERO)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     private List<Procedimento> buscarProcedimentos(List<ProcedimentoRequestResponse> requests) {
