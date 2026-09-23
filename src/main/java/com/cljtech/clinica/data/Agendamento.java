@@ -33,7 +33,7 @@ public class Agendamento extends EntidadeBase {
     @Column(nullable = false)
     private LocalDateTime dataHoraFim;
 
-    @Enumerated(EnumType.STRING)
+    // Converter (autoApply) trata valores legados: PENDENTE, FINALIZADO, AUSENTE
     private StatusAgendamento status;
 
     private String motivoConsulta;
