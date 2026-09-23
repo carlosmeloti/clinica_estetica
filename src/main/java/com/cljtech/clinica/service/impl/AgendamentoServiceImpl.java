@@ -16,18 +16,23 @@ import com.cljtech.clinica.model.records.AgendamentoResponse;
 import com.cljtech.clinica.model.records.ProcedimentoRequestResponse;
 import com.cljtech.clinica.service.AgendamentoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.cljtech.clinica.exception.ConflitoException;
 import com.cljtech.clinica.exception.RecursoNaoEncontradoException;
 import com.cljtech.clinica.exception.RegraNegocioException;
 
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -35,6 +40,9 @@ import org.springframework.data.domain.Pageable;
 @RequiredArgsConstructor
 @Transactional
 public class AgendamentoServiceImpl implements AgendamentoService {
+
+    /** Limite máximo do intervalo da agenda (visão mês + folga). */
+    private static final int MAX_DIAS_AGENDA = 92;
 
     private final AgendamentoRepository agendamentoRepository;
     private final PacienteRepository pacienteRespository;
@@ -102,14 +110,70 @@ public class AgendamentoServiceImpl implements AgendamentoService {
     @Override
     @Transactional(readOnly = true)
     public List<AgendamentoResponse> listarPorDiaEProfissional(Long profissionalId, LocalDate data) {
-        return agendamentoRepository.findByProfissionalIdAndDataHoraInicioBetween(
-                        profissionalId,
-                        data.atStartOfDay(),
-                        data.atTime(LocalTime.MAX)
-                )
+        return listarAgenda(data, data, profissionalId, null);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AgendamentoResponse> listarAgenda(
+            LocalDate dataInicio,
+            LocalDate dataFim,
+            Long profissionalId,
+            StatusAgendamento status
+    ) {
+        if (dataInicio == null || dataFim == null) {
+            throw new RegraNegocioException("dataInicio e dataFim são obrigatórias.");
+        }
+        if (dataInicio.isAfter(dataFim)) {
+            throw new RegraNegocioException("dataInicio deve ser anterior ou igual a dataFim.");
+        }
+        long dias = ChronoUnit.DAYS.between(dataInicio, dataFim) + 1;
+        if (dias > MAX_DIAS_AGENDA) {
+            throw new RegraNegocioException(
+                    "O intervalo da agenda não pode ultrapassar " + MAX_DIAS_AGENDA + " dias."
+            );
+        }
+
+        if (profissionalId != null) {
+            Usuario profissional = usuarioRepository.findById(profissionalId)
+                    .orElseThrow(() -> new RecursoNaoEncontradoException("Profissional não encontrado"));
+            if (profissional.getPerfil() != PerfilUsuario.PROFISSIONAL) {
+                throw new RegraNegocioException("O usuário informado não tem perfil de profissional.");
+            }
+        }
+
+        LocalDateTime inicio = dataInicio.atStartOfDay();
+        LocalDateTime fim = dataFim.atTime(LocalTime.MAX);
+
+        return agendamentoRepository
+                .findAll(criarSpecificationAgenda(inicio, fim, profissionalId, status), Sort.by("dataHoraInicio"))
                 .stream()
                 .map(entityMapper::toAgendamentoRequestResponse)
                 .toList();
+    }
+
+    private Specification<Agendamento> criarSpecificationAgenda(
+            LocalDateTime inicio,
+            LocalDateTime fim,
+            Long profissionalId,
+            StatusAgendamento status
+    ) {
+        return (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            // Sobreposição de intervalo (mesmo critério do conflito de horário)
+            predicates.add(cb.lessThan(root.get("dataHoraInicio"), fim));
+            predicates.add(cb.greaterThan(root.get("dataHoraFim"), inicio));
+
+            if (profissionalId != null) {
+                predicates.add(cb.equal(root.get("profissional").get("id"), profissionalId));
+            }
+            if (status != null) {
+                predicates.add(cb.equal(root.get("status"), status));
+            }
+
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
     }
 
     @Override

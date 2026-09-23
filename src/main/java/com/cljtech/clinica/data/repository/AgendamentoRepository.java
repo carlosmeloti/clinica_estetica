@@ -3,13 +3,14 @@ package com.cljtech.clinica.data.repository;
 import com.cljtech.clinica.data.Agendamento;
 import com.cljtech.clinica.model.enuns.StatusAgendamento;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> {
+public interface AgendamentoRepository extends JpaRepository<Agendamento, Long>, JpaSpecificationExecutor<Agendamento> {
 
     List<Agendamento> findByProfissionalIdAndDataHoraInicioBetween(
             Long profissionalId,

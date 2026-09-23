@@ -26,6 +26,19 @@ public interface AgendamentoController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data
     );
 
+    /**
+     * Agenda por intervalo de datas.
+     * Sem profissionalId → agenda geral (todos os profissionais).
+     * Com profissionalId → agenda daquele profissional.
+     */
+    @GetMapping("/listar-agenda")
+    ResponseEntity<List<AgendamentoResponse>> listarAgenda(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim,
+            @RequestParam(required = false) Long profissionalId,
+            @RequestParam(required = false) StatusAgendamento status
+    );
+
     @GetMapping("/listar-por-status")
     ResponseEntity<List<AgendamentoResponse>> listarPorStatus(@RequestParam StatusAgendamento status);
 

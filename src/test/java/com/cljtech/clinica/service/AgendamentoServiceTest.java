@@ -23,13 +23,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 
 @ExtendWith(MockitoExtension.class)
 class AgendamentoServiceTest {
@@ -110,5 +115,55 @@ class AgendamentoServiceTest {
         );
 
         assertThrows(RegraNegocioException.class, () -> agendamentoService.criar(invalidRequest));
+    }
+
+    @Test
+    void listarAgendaGeralSemProfissional() {
+        when(agendamentoRepository.findAll(any(Specification.class), any(Sort.class)))
+                .thenReturn(List.of(agendamento));
+        when(entityMapper.toAgendamentoRequestResponse(agendamento)).thenReturn(mock(AgendamentoResponse.class));
+
+        LocalDate inicio = LocalDate.of(2026, 9, 1);
+        LocalDate fim = LocalDate.of(2026, 9, 30);
+
+        List<AgendamentoResponse> resultado = agendamentoService.listarAgenda(inicio, fim, null, null);
+
+        assertEquals(1, resultado.size());
+        verify(agendamentoRepository).findAll(any(Specification.class), eq(Sort.by("dataHoraInicio")));
+        verify(usuarioRepository, never()).findById(any());
+    }
+
+    @Test
+    void listarAgendaPorProfissional() {
+        Usuario profissional = new Usuario();
+        profissional.setPerfil(PerfilUsuario.PROFISSIONAL);
+        when(usuarioRepository.findById(10L)).thenReturn(Optional.of(profissional));
+        when(agendamentoRepository.findAll(any(Specification.class), any(Sort.class)))
+                .thenReturn(List.of(agendamento));
+        when(entityMapper.toAgendamentoRequestResponse(agendamento)).thenReturn(mock(AgendamentoResponse.class));
+
+        LocalDate dia = LocalDate.of(2026, 9, 23);
+        List<AgendamentoResponse> resultado = agendamentoService.listarAgenda(dia, dia, 10L, null);
+
+        assertEquals(1, resultado.size());
+        verify(usuarioRepository).findById(10L);
+    }
+
+    @Test
+    void listarAgendaComIntervaloInvalido() {
+        LocalDate inicio = LocalDate.of(2026, 9, 30);
+        LocalDate fim = LocalDate.of(2026, 9, 1);
+
+        assertThrows(RegraNegocioException.class,
+                () -> agendamentoService.listarAgenda(inicio, fim, null, null));
+    }
+
+    @Test
+    void listarAgendaComIntervaloMaiorQueLimite() {
+        LocalDate inicio = LocalDate.of(2026, 1, 1);
+        LocalDate fim = LocalDate.of(2026, 5, 1);
+
+        assertThrows(RegraNegocioException.class,
+                () -> agendamentoService.listarAgenda(inicio, fim, null, null));
     }
 }

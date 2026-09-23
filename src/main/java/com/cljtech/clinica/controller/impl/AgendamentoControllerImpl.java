@@ -36,6 +36,24 @@ public class AgendamentoControllerImpl implements AgendamentoController {
     }
 
     @Override
+    public ResponseEntity<List<AgendamentoResponse>> listarAgenda(
+            LocalDate dataInicio,
+            LocalDate dataFim,
+            Long profissionalId,
+            StatusAgendamento status
+    ) {
+        List<AgendamentoResponse> agendamentos = agendamentoService.listarAgenda(
+                dataInicio, dataFim, profissionalId, status
+        );
+
+        if (agendamentos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(agendamentos);
+    }
+
+    @Override
     public ResponseEntity<List<AgendamentoResponse>> listarPorStatus(StatusAgendamento status) {
 
         List<AgendamentoResponse> agendamentos = agendamentoService.listarPorStatus(status);

@@ -14,6 +14,19 @@ public interface AgendamentoService {
 
     AgendamentoResponse criar(AgendamentoRequest agendamentoRequest);
     List<AgendamentoResponse> listarPorDiaEProfissional(Long profissionalId, LocalDate data);
+
+    /**
+     * Lista a agenda no intervalo informado.
+     * Sem {@code profissionalId}: agenda geral (todos os profissionais).
+     * Com {@code profissionalId}: agenda filtrada por profissional.
+     */
+    List<AgendamentoResponse> listarAgenda(
+            LocalDate dataInicio,
+            LocalDate dataFim,
+            Long profissionalId,
+            StatusAgendamento status
+    );
+
     Page<AgendamentoResponse> listarTodos(Pageable pageable);
     AgendamentoResponse atualizar(Long id, AgendamentoRequest agendamentoRequest);
 
