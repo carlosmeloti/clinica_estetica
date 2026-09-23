@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +26,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -78,7 +80,7 @@ class PacienteServiceTest {
     @Test
     void atualizarPacienteComSucesso() {
         when(pacienteRepository.existsById(1L)).thenReturn(true);
-        when(pacienteRepository.findByCriterios(any(), any(), any(), any())).thenReturn(org.springframework.data.domain.Page.empty());
+        when(pacienteRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(org.springframework.data.domain.Page.empty());
         when(entityMapper.toPaciente(request)).thenReturn(paciente);
         when(pacienteRepository.save(any(Paciente.class))).thenReturn(paciente);
         when(entityMapper.toPacienteRequestResponse(paciente)).thenReturn(request);
@@ -104,7 +106,7 @@ class PacienteServiceTest {
         Page<Paciente> page = new PageImpl<>(List.of(paciente));
         PacienteResumoResponse resumo = new PacienteResumoResponse(1L, "João Silva", "12345678901", "11999999999", "joao@email.com");
 
-        when(pacienteRepository.findByCriterios("João", null, null, pageable)).thenReturn(page);
+        when(pacienteRepository.findAll(any(Specification.class), eq(pageable))).thenReturn(page);
         when(entityMapper.toPacienteResumoResponse(paciente)).thenReturn(resumo);
 
         Page<PacienteResumoResponse> result = pacienteService.buscarResumoPorCriterios("João", null, null, pageable);
@@ -112,6 +114,6 @@ class PacienteServiceTest {
         assertNotNull(result);
         assertEquals(1, result.getTotalElements());
         assertEquals("João Silva", result.getContent().get(0).nome());
-        verify(pacienteRepository).findByCriterios("João", null, null, pageable);
+        verify(pacienteRepository).findAll(any(Specification.class), eq(pageable));
     }
 }
