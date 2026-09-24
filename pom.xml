@@ -23,12 +23,12 @@
 		<lombok.mapstruct.binding.version>0.2.0</lombok.mapstruct.binding.version>
 		<jjwt.version>0.12.5</jjwt.version>
 		<postgresql.version>42.7.3</postgresql.version>
-		<!-- Front Angular (irmão deste módulo: ../frontend) -->
+		<!-- Front Angular (irmão deste módulo: ../clinica-estetica-fe) -->
 		<node.version>v22.14.0</node.version>
 		<npm.version>10.9.2</npm.version>
-		<frontend.working.directory>${project.basedir}/../frontend</frontend.working.directory>
+		<frontend.working.directory>${project.basedir}/../clinica-estetica-fe</frontend.working.directory>
 		<!-- Angular 17+ application builder: dist/<nome>/browser — ajuste se necessário -->
-		<frontend.project.name>frontend</frontend.project.name>
+		<frontend.project.name>clinica-estetica-app</frontend.project.name>
 		<frontend.dist.directory>${frontend.working.directory}/dist/${frontend.project.name}/browser</frontend.dist.directory>
 	</properties>
 

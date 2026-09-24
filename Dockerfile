@@ -1,13 +1,13 @@
 # =============================================================================
-# Multi-stage build: Angular (../frontend) + Spring Boot → JRE 21 Alpine
+# Multi-stage build: Angular (../clinica-estetica-fe) + Spring Boot → JRE 21 Alpine
 #
-# Contexto de build = pasta PAI (clinita-estetica/), que contém:
-#   frontend/
+# Contexto de build = pasta RAIZ (clinicaestetica/), que contém:
+#   clinica-estetica-fe/
 #   clinica_estetica/
 #
 # Exemplos:
-#   docker build -f clinica_estetica/Dockerfile -t clinica-app ..
-#   docker compose -f clinica_estetica/docker-compose.yml up --build
+#   docker build -f clinica_estetica/Dockerfile -t clinica-app .
+#   docker compose up --build
 # =============================================================================
 
 # ---------- Stage 1: Maven + Node (via frontend-maven-plugin) ----------
@@ -20,11 +20,11 @@ COPY clinica_estetica/pom.xml clinica_estetica/
 COPY clinica_estetica/src clinica_estetica/src
 
 # Front Angular (irmão do backend)
-COPY frontend frontend
+COPY clinica-estetica-fe clinica-estetica-fe
 
 WORKDIR /workspace/clinica_estetica
 
-# -Pwith-frontend: npm ci + ng build + cópia para target/classes/static
+# -Pwith-frontend: npm install + ng build + cópia para target/classes/static
 RUN mvn -B -Pwith-frontend clean package -DskipTests \
  && cp target/clinica-*.jar /workspace/app.jar
 
