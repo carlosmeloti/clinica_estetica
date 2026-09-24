@@ -23,6 +23,13 @@
 		<lombok.mapstruct.binding.version>0.2.0</lombok.mapstruct.binding.version>
 		<jjwt.version>0.12.5</jjwt.version>
 		<postgresql.version>42.7.3</postgresql.version>
+		<!-- Front Angular (irmão deste módulo: ../frontend) -->
+		<node.version>v22.14.0</node.version>
+		<npm.version>10.9.2</npm.version>
+		<frontend.working.directory>${project.basedir}/../frontend</frontend.working.directory>
+		<!-- Angular 17+ application builder: dist/<nome>/browser — ajuste se necessário -->
+		<frontend.project.name>frontend</frontend.project.name>
+		<frontend.dist.directory>${frontend.working.directory}/dist/${frontend.project.name}/browser</frontend.dist.directory>
 	</properties>
 
 	<dependencies>
@@ -185,4 +192,85 @@
 <!--			</plugin>-->
 		</plugins>
 	</build>
+
+	<!--
+	  Build do Angular + cópia para classpath:/static
+	  Uso local:  mvn -Pwith-frontend clean package
+	  Docker:     ativado no Dockerfile
+	  Sem front:  mvn clean package  (perfil não ativo)
+	-->
+	<profiles>
+		<profile>
+			<id>with-frontend</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.github.eirslett</groupId>
+						<artifactId>frontend-maven-plugin</artifactId>
+						<version>1.15.1</version>
+						<configuration>
+							<workingDirectory>${frontend.working.directory}</workingDirectory>
+							<installDirectory>${project.build.directory}</installDirectory>
+						</configuration>
+						<executions>
+							<execution>
+								<id>install-node-and-npm</id>
+								<goals>
+									<goal>install-node-and-npm</goal>
+								</goals>
+								<configuration>
+									<nodeVersion>${node.version}</nodeVersion>
+									<npmVersion>${npm.version}</npmVersion>
+								</configuration>
+							</execution>
+							<execution>
+								<id>npm-install</id>
+								<goals>
+									<goal>npm</goal>
+								</goals>
+								<phase>generate-resources</phase>
+								<configuration>
+									<!-- install (não ci) para funcionar mesmo sem package-lock.json -->
+									<arguments>install --no-audit --progress=false</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>npm-build</id>
+								<goals>
+									<goal>npm</goal>
+								</goals>
+								<phase>generate-resources</phase>
+								<configuration>
+									<arguments>run build -- --configuration=production</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-resources-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-angular-to-static</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
+									<resources>
+										<resource>
+											<directory>${frontend.dist.directory}</directory>
+											<filtering>false</filtering>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

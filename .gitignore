@@ -34,3 +34,8 @@ build/
 
 ### Local ###
 prints/
+
+### Front embutido (gerado no build; não commitar dist) ###
+src/main/resources/static/**
+!src/main/resources/static/.gitkeep
+

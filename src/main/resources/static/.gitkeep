@@ -1,0 +1,3 @@
+# Placeholder: o build com -Pwith-frontend copia o dist do Angular para target/classes/static.
+# Não versionar artefatos gerados do front aqui.
+.gitkeep
